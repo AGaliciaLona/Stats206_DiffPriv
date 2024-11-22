@@ -4,7 +4,7 @@ format: html
 editor: visual
 ---
 
-# Introduction To Differntial Privacy
+# Introduction To Differential Privacy
 
 -   can talk about what it is like explain its use
 
