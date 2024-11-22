@@ -3,16 +3,23 @@ title: "ProjectCode"
 format: html
 editor: visual
 ---
-# Introduction To Differntial Privacy 
-- can talk about what it is like explain its use
-## DP Examples
-- can talk about usage in modern world
-# Noise Implementation Methods
-- the types of noise implantation 
 
+# Introduction To Differntial Privacy
+
+-   can talk about what it is like explain its use
+
+## DP Examples
+
+-   can talk about usage in modern world
+
+# Noise Implementation Methods
+
+-   the types of noise implantation
 
 # DiffPriv package
-- what the diffpriv package is and how it works
+
+-   what the diffpriv package is and how it works
 
 # Implementation of DiffPriv
-- now for our example of using diffpriv with linear model.
+
+-   now for our example of using diffpriv with linear model.
