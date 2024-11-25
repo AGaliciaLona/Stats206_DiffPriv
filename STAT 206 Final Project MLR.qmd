@@ -150,3 +150,72 @@ revenue & thousand dollars & num cont response & 10.16 & 2,187,464.00 & 101,669.
 **NOTE:** The above variables are the ones found in the original data set. If necessary, we will transform or eliminate variables during model building to
 facilitate the process. For more details, please refer to the "Model Building
 and Diagnostics" section in the Appendix.
+
+\newpage
+
+# Appendix
+
+## Data Cleaning
+
+```{r, message=FALSE,warning=FALSE, include=FALSE}
+library(tidyverse)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+library(gridExtra)
+library(GGally)
+library(car)
+library(mltools)
+library(data.table)
+library(fastDummies)
+library(lmtest)
+library(tidyr)
+library(grid)
+library(scales)
+library(forcats)
+
+original <- read.csv(file.choose(), header = T)
+```
+
+```{r, message=FALSE, warning=FALSE}
+# subset data
+sub1 <- subset(original, select = c("genres", "original_language",
+                                    "popularity","budget","revenue",
+                                    "runtime","vote_average", "vote_count"))
+
+
+# replace all empty cells and 0's with NA
+sub1[sub1 == ""] = NA
+sub1[sub1 == 0] = NA
+
+# clean the data with selected restrictions
+sub2 <- sub1 %>%
+  na.omit() %>%
+  filter(revenue >= 10000) %>%
+  filter(budget >= 10000) %>%
+  filter(runtime >= 40) %>%
+  filter(vote_count >= 95) %>%
+  filter(vote_average > 0) 
+
+# split genres and find the top 2 genres
+genre <- strsplit(sub2$genres, "-")
+sub2$genres <- as.character(lapply(genre, function(x) x[1]))
+genre_freq <- table(sub2$genres)
+genre_rank <- sort(genre_freq,decreasing = T)
+genre_rank[1:2]
+
+# find the top 2 original languages
+lang_freq <- table(sub2$original_language)
+lang_rank <- sort(lang_freq, decreasing = T)
+lang_rank[1:2]
+
+# subset again using only the top 2 genres and the top 2 original languages
+# this is the final data set to be used for model building
+sub3 <- sub2 %>%
+  filter(genres == "Drama" | genres == "Comedy") %>%
+  filter(original_language == "en" | original_language == "fr")
+
+# divide revenue and budget by 1000 for easier calculations and visualization
+sub3$budget <- as.numeric(as.character(sub3$budget)) / 1000
+sub3$revenue <- as.numeric(as.character(sub3$revenue)) / 1000
+```
