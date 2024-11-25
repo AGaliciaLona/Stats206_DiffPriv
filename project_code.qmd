@@ -17,6 +17,8 @@ format:
 
 -   can talk about what it is like explain its use
 
+Differential privacy (DP) is a statistical framework that protects individuals' sensitive information in a dataset by adding noise to the outputs shared with scientists, companies, or other analysts. The goal is to ensure privacy while still enabling accurate and meaningful data analysis.  
+
 ## DP Examples
 
 -   can talk about usage in modern world
