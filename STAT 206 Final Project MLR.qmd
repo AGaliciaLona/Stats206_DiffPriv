@@ -1,0 +1,143 @@
+---
+title: "STAT 206 Final Project MLR"
+author: "Axel Galicia Lona, Linlin Liu, amd Nancy Lopez"
+date: "2024-12-13"
+echo: true
+format:
+  html:
+    toc: true
+    toc-location: left
+    embed-resources: true
+    code-line-numbers: true
+  pdf:
+    code-line-numbers: true
+---
+
+\newpage
+\tableofcontents
+\newpage
+\listoffigures
+\newpage
+\listoftables
+\newpage
+
+# Introduction
+
+## Background and Motivation
+
+Movies are a visual art form that simulates and communicates thoughts, actions, ideas, and realities by combining camera recordings with sound. With rapid
+population expansion and technical improvement, the movie industry grows
+increasingly sophisticated. The industry's maturity has also boosted the rate
+at which movies are made and produced, and every year, a new batch of films is  released in theaters. Therefore, studios, producers, and investors need
+reliable predictions to make informed decisions about budgeting, marketing,
+and resource allocation.
+
+As viewers, we are also interested in the factors that contribute to a film's revenue, because these generally define its success. Furthermore, the highly competitive nature of the film industry, as well as the huge economic impact of
+movie income, motivated us to pursue this project. With abundant data available
+on various aspects of movies, including budget, cast, genre, release dates, and social media buzz, applying statistical models becomes a valuable tool for
+analysis. Thus, we chose to build a multilinear regression model for our
+project.
+
+## Objectives
+
+This project aims to deepen the understanding of how different factors may
+impact a movie’s revenue and to what degree they will influence the box office.
+In other words, we aim to determine whether the data provides sufficient
+evidence to indicate that these variables contribute information for the
+prediction of a movie’s revenue. If so, we seek to identify which variables
+contribute the most to accurate predictions. Moreover, we would like to explore
+the possibility of protecting sensitive information in the data set by adding a controlled amount of random noise using differential privacy.
+
+These will be achieved by analyzing the data set *movies.csv*, which samples
+various components of a movie, including genre, release date, budget,
+production company, and cast, from 722,463 movies.
+
+## Hypotheses
+
+Based on the information provided by the data set, we propose the following hypotheses:
+
+1. Different attributes of a feature movie significantly impacts its revenue.
+
+2. A movie’s budget and genre contribute more significantly than others.
+
+# Data Cleaning
+
+Having an original data set of 722,463 observations and 20 variables would make
+it rather difficult for us to build a model and increase the model complexity,
+so we first decided to eliminate 12 variables as the first step of our data
+cleaning process.
+
+Next, we further cleaned the data set by completing the following:
+
+* Omitted all NA's and 0's
+
+* Chose movies with revenue and budget greater than or equal to $10,000
+
+* Chose movies with run time greater than or equal to 40 minutes
+
+* Chose movies with vote count greater than or equal to 95
+
+* Chose movies with vote average greater than 0
+
+The above left us with a data set of 6,804 observations and 8 variables.
+However, due to the concern that having too many categories in our chosen
+categorical variables, we decided to chose the top two categories for each. We
+also divided all variables with unites in dollars by 1,000 for to facilitate
+analysis. At the end, we obtained a total of 2,624 observations and 8 variables
+as the final data set.
+
+**NOTE:** For the code, please refer to the "Data Cleaning" section in the
+Appendix.
+
+# Data Description
+
+For the model building process, we will now be working with the following
+variables:
+
+- *genres*: genre of the movie
+
+- *original language*: the language in which the movie was first released
+
+- *popularity*: the amount of times a movie’s page has been visited according
+to TMDB metric
+
+- *budget*: the total projected costs of making a movie
+
+- *runtime*: duration of the movie
+
+- *vote average*: average of votes given by TMDB users
+
+- *vote count*: total number of TMDB votes a movie received
+
+- *revenue*: the amount of money a movie raised by ticket sales, output target
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 
+Variable & Unit & Type & Min & Max & SD\\
+\hline 
+genres & Drama or Comedy & cat predictor & - & - & -\\
+\hline 
+original language & en or fr & cat predictor & - & - & -\\
+\hline
+popularity & - & num cont predictor & 0.82 & 3,994.34 & 86.44\\
+\hline 
+budget & thousand dollars & num cont predictor & 12.00 & 20,000.00 & 23,242.17\\
+\hline
+runtime & minutes & num cont predictor & 62 & 254 & 20.05\\
+\hline
+vote average & - & num disc predictor & 3.30 & 8.71 & 0.76\\
+\hline
+vote count & - & num disc predictor & 95 & 31,145 & 2,543.94\\
+\hline
+revenue & thousand dollars & num cont response & 10.16 & 2,187,464.00 & 101,669.80\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Data Summary Statistics}
+\end{table}
+
+**NOTE:** The above variables are the ones found in the original data set. If necessary, we will transform or eliminate variables during model building to
+facilitate the process. For more details, please refer to the "Model Building
+and Diagnostics" section in the Appendix.
