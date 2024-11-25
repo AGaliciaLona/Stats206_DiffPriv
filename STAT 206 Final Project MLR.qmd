@@ -252,4 +252,43 @@ g7<-ggplot(sub3, aes(x = vote_count)) +
 grid.arrange(g1, g2, g3, g4, g5, g6, g7, ncol = 2)
 
 ```
+```{r fig.cap="Predictor vs. Response", message=FALSE, warning=FALSE}
+
+# create scatter plots between each quantitative predictor var and the response var to see their relationships
+
+s.popularity <- ggplot(sub3, aes(x = popularity, y = revenue)) +
+  geom_point(color = "darkblue") 
+s.budget <- ggplot(sub3, aes(x = budget, y = revenue)) +
+  geom_point(color = "darkblue") 
+s.runtime <- ggplot(sub3, aes(x = runtime, y = revenue)) +
+  geom_point(color = "darkblue") 
+s.vote_average <- ggplot(sub3, aes(x = vote_average, y = revenue)) +
+  geom_point(color = "darkblue") 
+s.vote_count <- ggplot(sub3, aes(x = vote_count, y = revenue)) +
+  geom_point(color = "darkblue")
+
+## create boxplots between each categorical predictor and the response
+
+box.genres <- ggplot(sub3, aes(x = genres, y = revenue)) +
+           geom_boxplot(color = "darkblue", outlier.color = "red",
+                        outlier.shape = 4, outlier.size = 2) 
+box.original_language <- ggplot(sub3, aes(x = original_language, y = revenue)) +
+              geom_boxplot(color = "darkblue", outlier.color = "red",
+                           outlier.shape = 4, outlier.size = 2) 
+
+# divide the frame in grid using grid.arrange() and put above plots in it
+
+grid.arrange(s.popularity, s.budget, s.runtime, s.vote_average, s.vote_count,
+             box.genres, box.original_language, ncol = 4, nrow = 2)
+
+```
+```{r fig.cap="Initial Pairwise Comparison", message=FALSE, warning=FALSE}
+
+# correlation between variables 
+
+ggpairs(sub3) + theme(axis.text.x = element_text(size= 2, angle = 90),
+                      axis.text.y = element_text(size = 2),
+                      strip.text.y = element_text(angle = 0))
+
+```
 
