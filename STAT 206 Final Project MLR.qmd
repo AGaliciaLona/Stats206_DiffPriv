@@ -219,3 +219,37 @@ sub3 <- sub2 %>%
 sub3$budget <- as.numeric(as.character(sub3$budget)) / 1000
 sub3$revenue <- as.numeric(as.character(sub3$revenue)) / 1000
 ```
+
+## EDA
+
+```{r fig.cap="Histogram of Response Variable", message=FALSE, warning=FALSE}
+
+# we need to check normality of the y values before any analysis
+
+ggplot(sub3, aes(x = revenue)) +
+  geom_histogram(fill = "darkblue", color = "white") +
+  labs(x = "revenue (in thousand dollars)", y = "count")
+```
+```{r fig.cap="Histograms and Barplots of Predictor Variables", message=FALSE, warning=FALSE}
+
+# analzyze the predictor variables
+
+g1 <-ggplot(sub3, aes(x = genres)) + 
+  geom_bar(fill = "darkblue", color = "white")
+g2 <-ggplot(sub3, aes(x = original_language)) + 
+  geom_bar(fill = "darkblue", color = "white")
+g3 <-ggplot(sub3, aes(x = popularity)) +
+  geom_histogram(fill = "darkblue", color = "white", binwidth = 50)
+g4 <-ggplot(sub3, aes(x = budget)) + 
+  geom_histogram(fill = "darkblue", color = "white")
+g5 <-ggplot(sub3, aes(x = runtime)) + 
+  geom_histogram(fill = "darkblue", color = "white")
+g6 <-ggplot(sub3, aes(x = vote_average)) + 
+  geom_histogram(fill = "darkblue", color = "white")
+g7<-ggplot(sub3, aes(x = vote_count)) + 
+  geom_histogram(fill = "darkblue", color = "white")
+
+grid.arrange(g1, g2, g3, g4, g5, g6, g7, ncol = 2)
+
+```
+
