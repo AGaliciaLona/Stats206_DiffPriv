@@ -25,18 +25,27 @@ format:
 
 ## Background and Motivation
 
-Movies are a visual art form that simulates and communicates thoughts, actions, ideas, and realities by combining camera recordings with sound. With rapid
+Movies are a visual art form that simulates and communicates thoughts, actions,
+ideas, and realities by combining camera recordings with sound. With rapid
 population expansion and technical improvement, the movie industry grows
 increasingly sophisticated. The industry's maturity has also boosted the rate
 at which movies are made and produced, and every year, a new batch of films is  released in theaters. Therefore, studios, producers, and investors need
 reliable predictions to make informed decisions about budgeting, marketing,
 and resource allocation.
 
-As viewers, we are also interested in the factors that contribute to a film's revenue, because these generally define its success. Furthermore, the highly competitive nature of the film industry, as well as the huge economic impact of
+As viewers, we are also interested in the factors that contribute to a film's
+revenue, because these generally define its success. Furthermore, the highly competitive nature of the film industry, as well as the huge economic impact of
 movie income, motivated us to pursue this project. With abundant data available
-on various aspects of movies, including budget, cast, genre, release dates, and social media buzz, applying statistical models becomes a valuable tool for
+on various aspects of movies, including budget, cast, genre, release dates, and
+social media buzz, applying statistical models becomes a valuable tool for
 analysis. Thus, we chose to build a multilinear regression model for our
 project.
+
+Differential privacy is crucial for datasets containing sensitive aspects of
+movies, such as budget, revenue, cast, and others, as it ensures that
+individual data points cannot be traced back to their sources. For instance, protecting details like a movie's budget prevents competitors from exploiting financial strategies, while preserving anonymity in user-related data
+safeguards privacy rights. By adding controlled random noise to the data,
+differential privacy balances utility with confidentiality, enabling meaningful analysis without exposing proprietary or personal information.
 
 ## Objectives
 
