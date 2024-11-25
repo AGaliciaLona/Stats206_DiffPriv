@@ -1,7 +1,16 @@
 ---
-title: "ProjectCode"
-format: html
-editor: visual
+title: "STAT 206 Final Project Report"
+author: "Axel Galicia Lona, Linlin Liu, amd Nancy Lopez"
+date: "2024-12-13"
+echo: true
+format:
+  html:
+    toc: true
+    toc-location: left
+    embed-resources: true
+    code-line-numbers: true
+  pdf:
+    code-line-numbers: true
 ---
 
 # Introduction To Differential Privacy
