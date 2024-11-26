@@ -15,10 +15,12 @@ format:
 
 # Introduction To Differential Privacy
 
--   can talk about what it is like explain its use
+Differential Privacy (DP) is a statistical framework designed to protect individuals' sensitive information in a dataset. It protects privacy by adding random noise to the outputs of data analyses before they are shared with any third-party such as scientists, companies, or other analysts. This ensures that no single individual's data can be identified or inferred, even if someone has additional knowledge about the dataset. The goal of DP is to balance privacy protection with the need for accurate and meaningful data analysis, allowing organizations to extract valuable insights without compromising individual privacy.
 
-Differential privacy (DP) is a statistical framework that protects individuals' sensitive information in a dataset by adding noise to the outputs shared with scientists, companies, or other analysts. The goal is to ensure privacy while still enabling accurate and meaningful data analysis.  
+The formal definition of DP states that for any 2 datasets, D and D' differing by one individual data point, the probability of mechanism M producing a certain result should be very close for both datasets. This can be mathematically expressed as: $Pr(M(D) \in R) \leq exp(\epsilon) * Pr(M(D') \in R) $ where $\epsilon$ is the privacy parameter. A small privacy parameter means strong privacy since the output reveals less information about individual data. By having two similar datasets, one missing a data point, it becomes extremely difficult to guess whether a specific persons data was used; therefore protecting individuals privacy. 
 
+A good noise-adding mechanism should privatize data while maintaining its usefulness, enabling meaningful analysis without risking individuals’ sensitive information. This method is particularly important in today's world, where vast amounts of data are constantly being collected. From our phones and social media platforms to streaming services and other technologies, our data is tracked to provide better algorithms and more personalized recommendations. DP plays a crucial role in protecting our privacy in fields like healthcare, technology, and beyond.
+ 
 ## DP Examples
 
 -   can talk about usage in modern world
