@@ -292,3 +292,66 @@ ggpairs(sub3) + theme(axis.text.x = element_text(size= 2, angle = 90),
 
 ```
 
+
+### Forward Stepwise Regression
+
+```{r, message=FALSE, warning=FALSE}
+# perform stepwise regression using the original data set
+
+# specify the null model with no predictor
+original.null <- lm(revenue ~ 1, data = sub3)
+# specify the full model using all of the potential predictors
+original.full <- lm(revenue ~ ., data = sub3)
+# use the stepwise algorithm to build a parsimonious model
+original.step <- step(original.null,
+                      scope = list(lower = original.null,
+                                   upper = original.full),
+                      direction = "both", test = "F")
+
+summary(original.step)
+```
+
+According to the final output of the stepwise regression model analysis, the
+significant predictors are *vote_count*, *budget*, *popularity*, and *genres*.
+Predictors *vote_average* and *runtime* are not statistically significant and
+have been excluded from the stepwise model.
+
+
+## Residual Diagnostics
+
+```{r fig.cap="Residual Diagnostics: Linearity", message=FALSE, warning=FALSE}
+# perform residual diagnostics on the residuals of the final stepwise model
+
+# check linearity
+ggplot(data = original.step, aes(x = .fitted, y = .resid)) +
+  geom_point(alpha = 0.5, color = "darkblue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(x = "Predicted Values", y = "Residuals")
+# predictor: vote count
+l.vc <- ggplot(data = original.step, aes(x = vote_count, y = .resid)) +
+  geom_point(alpha = 0.5, color = "darkblue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(x = "vote count", y = "Residuals")
+# predictor: budget
+l.budget <- ggplot(data = original.step, aes(x = budget, y = .resid)) +
+  geom_point(alpha = 0.5, color = "darkblue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(x = "budget (in thousand $)", y = "Residuals")
+# predictor: popularity
+l.popularity <- ggplot(data = original.step, aes(x = popularity, y = .resid)) +
+  geom_point(alpha = 0.5, color = "darkblue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(x = "popularity", y = "Residuals")
+
+# divide the frame in grid using grid.arrange() and put above plots in it
+grid.arrange(l.vc, l.budget, l.popularity, ncol = 3, nrow = 1)
+```
+
+Only *popularity* passed the linearity check as it showed no distinct pattern.
+
+```{r fig.cap="Residual Diagnostics: Constant Variance", message=FALSE, warning=FALSE}
+# perform residual diagnostics on the residuals of the final stepwise model
+
+# check constant variance
+bptest(original.step)
+```
