@@ -29,12 +29,14 @@ Movies are a visual art form that simulates and communicates thoughts, actions,
 ideas, and realities by combining camera recordings with sound. With rapid
 population expansion and technical improvement, the movie industry grows
 increasingly sophisticated. The industry's maturity has also boosted the rate
-at which movies are made and produced, and every year, a new batch of films is  released in theaters. Therefore, studios, producers, and investors need
+at which movies are made and produced, and every year, a new batch of films is 
+released in theaters. Therefore, studios, producers, and investors need
 reliable predictions to make informed decisions about budgeting, marketing,
 and resource allocation.
 
 As viewers, we are also interested in the factors that contribute to a film's
-revenue, because these generally define its success. Furthermore, the highly competitive nature of the film industry, as well as the huge economic impact of
+revenue, because these generally define its success. Furthermore, the highly 
+competitive nature of the film industry, as well as the huge economic impact of
 movie income, motivated us to pursue this project. With abundant data available
 on various aspects of movies, including budget, cast, genre, release dates, and
 social media buzz, applying statistical models becomes a valuable tool for
@@ -47,15 +49,39 @@ individual data points cannot be traced back to their sources. For instance,
 protecting details like a movie's budget prevents competitors from exploiting
 financial strategies, while preserving anonymity in user-related data
 safeguards privacy rights. By adding controlled random noise to the data,
-differential privacy balances utility with confidentiality, enabling meaningful analysis without exposing proprietary or personal information.
+differential privacy balances utility with confidentiality, enabling meaningful
+analysis without exposing proprietary or personal information.
 
 # Introduction To Differential Privacy
 
-Differential Privacy (DP) is a statistical framework designed to protect individuals' sensitive information in a dataset. It protects privacy by adding random noise to the outputs of data analyses before they are shared with any third-party such as scientists, companies, or other analysts. This ensures that no single individual's data can be identified or inferred, even if someone has additional knowledge about the dataset. The goal of DP is to balance privacy protection with the need for accurate and meaningful data analysis, allowing organizations to extract valuable insights without compromising individual privacy.
+Differential Privacy (DP) is a statistical framework designed to protect 
+individuals' sensitive information in a dataset. It protects privacy by adding 
+random noise to the outputs of data analyses before they are shared with any
+third-party such as scientists, companies, or other analysts. This ensures that 
+no single individual's data can be identified or inferred, even if someone has 
+additional knowledge about the dataset. The goal of DP is to balance privacy
+protection with the need for accurate and meaningful data analysis, allowing 
+organizations to extract valuable insights without compromising individual 
+privacy.
 
-The formal definition of DP states that for any 2 datasets, D and D' differing by one individual data point, the probability of mechanism M producing a certain result should be very close for both datasets. This can be mathematically expressed as: $Pr(M(D) \in R) \leq exp(\epsilon) * Pr(M(D') \in R) $ where $\epsilon$ is the privacy parameter. A small privacy parameter means strong privacy since the output reveals less information about individual data. By having two similar datasets, one missing a data point, it becomes extremely difficult to guess whether a specific persons data was used; therefore protecting individuals privacy. 
+The formal definition of DP states that for any 2 datasets, D and D' differing
+by one individual data point, the probability of mechanism M producing a
+certain result should be very close for both datasets. This can be
+mathematically expressed as: $Pr(M(D)\in R)\leq exp(\epsilon)*Pr(M(D') \in R)$
+where $\epsilon$ is the privacy parameter. A small privacy parameter means 
+strong privacy since the output reveals less information about individual data.
+By having two similar datasets, one missing a data point, it becomes extremely 
+difficult to guess whether a specific persons data was used; therefore
+protecting individuals privacy. 
 
-A good noise-adding mechanism should privatize data while maintaining its usefulness, enabling meaningful analysis without risking individuals’ sensitive information. This method is particularly important in today's world, where vast amounts of data are constantly being collected. From our phones and social media platforms to streaming services and other technologies, our data is tracked to provide better algorithms and more personalized recommendations. DP plays a crucial role in protecting our privacy in fields like healthcare, technology, and beyond.
+A good noise-adding mechanism should privatize data while maintaining its
+usefulness, enabling meaningful analysis without risking individuals’ sensitive
+information. This method is particularly important in today's world, where vast
+amounts of data are constantly being collected. From our phones and social media
+platforms to streaming services and other technologies, our data is tracked to 
+provide better algorithms and more personalized recommendations. DP plays a 
+crucial role in protecting our privacy in fields like healthcare, technology, 
+and beyond.
  
 ## DP Examples
 
@@ -67,13 +93,46 @@ A good noise-adding mechanism should privatize data while maintaining its useful
 
 # DiffPriv package
 
--   what the diffpriv package is and how it works
+We implemented differential privacy to our data through an R package called 
+‘diffpriv’. This package provides tools that support differential privacy,
+making it suitable for releasing analyses on sensitive data to third parties.
+Diffpriv implements genetic mechanisms and a sensitivity sampler that replaces 
+the exact sensitivity bounds with empirical estimates. This is convenient since 
+calculating the exact sensitivity can be very complex and computationally 
+expensive. Usually for DP noise is added to the results of a query, based on
+the sensitivity of the query. When a query has high sensibility it means the
+data can be easily affected by one individual data point, therefore high
+sensitivity means we need more noise. However, less sensitivity means the query
+needs less noise. When using diffpriv, instead of calculating the worst-case
+sensitivity, we have the sensitivity sampler which estimates the sensitivity 
+based on the sample data given. This is very useful because one does not have 
+to do all complicated calculations in order to obtain the sensitivity, 
+therefore it’s time efficient. It also is very practical since when working
+with real data, it obtains a good estimate for most queries, including large 
+datasets. Lastly, using this method can add more precise data, leading to more
+accurate results while protecting privacy. 
 
-We implemented differential privacy to our data through an R package called ‘diffpriv’. This package provides tools that support differential privacy, making it suitable for releasing analyses on sensitive data to third parties. Diffpriv implements genetic mechanisms and a sensitivity sampler that replaces the exact sensitivity bounds with empirical estimates. This is convenient since calculating the exact sensitivity can be very complex and computationally expensive. Usually for DP noise is added to the results of a query, based on the sensitivity of the query. When a query has high sensibility it means the data can be easily affected by one individual data point, therefore high sensitivity means we need more noise. However, less sensitivity means the query needs less noise. When using diffpriv, instead of calculating the worst-case sensitivity, we have the sensitivity sampler which estimates the sensitivity based on the sample data given. This is very useful because one does not have to do all complicated calculations in order to obtain the sensitivity, therefore it’s time efficient. It also is very practical since when working with real data, it obtains a good estimate for most queries, including large datasets. Lastly, using this method can add more precise data, leading to more accurate results while protecting privacy. 
-
-Another great benefit of using this package is that it’s not very complicated to use. The first step is to set a target function, which means one has to set what we want to privatize. This could be a dataset, a mean value, or in our case linear regression coefficients. Next we determine the sensitivity manually, since we are using a Laplace distribution we calculate the sensitivity by 1/n, n being the number of observations in our dataset. This is because, for queries like mean or regression coefficients, the impact of one data point is smaller as the dataset grows. So, with larger datasets, the noise needed to protect privacy is reduced, as the influence of any single data point becomes less significant. This makes the process more efficient while still ensuring privacy. The next step is to determine the privacy budget $\epsilon$, which controls the trade-off between privacy and accuracy. A high privacy budget means less noise, resulting in less privacy being protected, and a low privacy budget means more noise is added to the dataset, which means more privacy. In our cas,e we chose a privacy budget one 1, which balances accuracy and privacy in a moderate way. 
-After establishing our privacy parameters, which determine how much noise to add, we can use the DPMechLaplace() function. This function adds Laplace noise to the query results. Once the noise is applied, we can release the privatized output using the releaseResponse() function. This will show how the data looks with the noise, which is what you would provide to a third party, ensuring that the privacy of individuals is protected.
-
+Another great benefit of using this package is that it’s not very complicated
+to use. The first step is to set a target function, which means one has to set 
+what we want to privatize. This could be a dataset, a mean value, or in our
+case linear regression coefficients. Next we determine the sensitivity manually,
+since we are using a Laplace distribution we calculate the sensitivity by 1/n, 
+n being the number of observations in our dataset. This is because, for queries 
+like mean or regression coefficients, the impact of one data point is smaller 
+as the dataset grows. So, with larger datasets, the noise needed to protect 
+privacy is reduced, as the influence of any single data point becomes less 
+significant. This makes the process more efficient while still ensuring privacy.
+The next step is to determine the privacy budget $\epsilon$, which controls the
+trade-off between privacy and accuracy. A high privacy budget means less noise, 
+resulting in less privacy being protected, and a low privacy budget means more
+noise is added to the dataset, which means more privacy. In our cas,e we chose 
+a privacy budget one 1, which balances accuracy and privacy in a moderate way. 
+After establishing our privacy parameters, which determine how much noise to
+add, we can use the DPMechLaplace() function. This function adds Laplace noise 
+to the query results. Once the noise is applied, we can release the privatized 
+output using the releaseResponse() function. This will show how the data looks 
+with the noise, which is what you would provide to a third party, ensuring that
+the privacy of individuals is protected.
 
 # Implementation of DiffPriv
 
