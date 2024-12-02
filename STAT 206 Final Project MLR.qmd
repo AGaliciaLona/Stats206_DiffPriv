@@ -357,4 +357,306 @@ bptest(original.step)
 ```
 
 
-hello 
+Because the $p$-value < 2.2$e^{-16}$ is much less than the significance level
+$\alpha$ = 0.05, we can reject the null hypothesis. Therefore, there is
+sufficient evidence to conclude the residuals do not have constant variance. 
+
+Because the $p$-value < 2.2$e^{-16}$ is much less than the significance level
+$\alpha$ = 0.05, we can reject the null hypothesis. Therefore, there is
+sufficient evidence to conclude the residuals do not have constant variance. 
+
+```{r fig.cap="Residual Diagnostics: Normality", message=FALSE, warning=FALSE}
+# perform residual diagnostics on the residuals of the final stepwise model
+
+# check normality 
+ggplot(data = original.step, aes(x = .resid)) + 
+  geom_histogram(fill = "darkblue", color = "white") +
+  labs(x = "revenue (in thousand $)", y = "count")
+
+ggplot(data = original.step, aes(x = .resid)) + 
+  geom_boxplot(color = "darkblue", outlier.color = "red",
+               outlier.shape = 4, outlier.size = 2) +
+           labs(y = "revenue (in thousand $)")
+
+qqnorm(resid(original.step))
+qqline(resid(original.step))
+
+shapiro.test(resid(original.step))
+```
+
+The residuals do not appear to be normally distributed due to the following
+reasons: 
+
+1. The histogram is slightly right-skewed instead of bell-shaped.
+2. The mean is not centered at 0 in the boxplot.
+3. The right tail of the Q-Q plot deviates significantly from the fitted Q-Q
+line.
+4. The Shapiro-Wilk test $p$-value < 2.2$e^{-16}$ is much less than the
+significance level $\alpha$ = 0.05, suggesting that I can reject the null
+hypothesis that the residuals are normally distributed.
+
+```{r, message=FALSE, warning=FALSE}
+# perform residual diagnostics on the residuals of the final stepwise model
+
+# check independence
+durbinWatsonTest(original.step)
+```
+
+Because the $p$-value = 0.608 is greater than the significance level $\alpha$ =
+0.05, I cannot reject the null hypothesis. Therefore, there is insufficient
+evidence to conclude that the residuals are not independent.
+
+## Model Building and Diagnostics
+
+```{r, message=FALSE, warning=FALSE}
+rev <- sub3$revenue
+vc <- sub3$vote_count
+budget <- sub3$budget
+pop <- sub3$popularity
+va <- sub3$vote_average
+rt <- sub3$runtime
+
+# create dummy variables for each cat var
+genre <- ifelse(sub3$genres == "Drama", 1, 0)
+o_lang <- ifelse(sub3$original_language == "en", 1, 0)
+```
+
+```{r fig.cap="Initial Plots of Predictor vs. Response Variables", message=FALSE, warning=FALSE}
+# check the relationship between each predictor var and rev
+a <- ggplot(sub3, aes(x = budget, y = rev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "budget (in thousand $)", y = "revenue (in thousand $)")
+b <- ggplot(sub3, aes(x = runtime, y = rev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "runtime (in minutes)", y = "revenue (in thousand $)")
+c <- ggplot(sub3, aes(x = popularity, y = rev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "popularity", y = "revenue (in thousand $)")
+d <- ggplot(sub3, aes(x = vote_count, y = rev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "vc", y = "revenue (in thousand $)")
+e <- ggplot(sub3, aes(x = vote_average, y = rev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "va", y = "revenue (in thousand $)")
+f <- ggplot(sub3, aes(x = genres, y = rev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "genres", y = "revenue (in thousand $)")
+g <- ggplot(sub3, aes(x = original_language, y = rev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "original lang", y = "revenue (in thousand $)")
+
+# divide the frame in grid using grid.arrange() and put above plots in it
+grid.arrange(a, b, c, d, e, f, g, ncol = 3, nrow = 3)
+```
+
+### Model Building
+
+```{r fig.cap="Interaction Between popularity and genres", message=FALSE, warning=FALSE}
+# check interaction between popularity and genre
+plot(pop, rev, type = "n")
+points(pop[genre == 0], rev[genre == 0], col="darkblue")
+points(pop[genre == 1], rev[genre == 1], col="darkred")
+```
+
+The two variables are overlapping, implying an interaction between the two. 
+
+```{r fig.cap="Residual Diagnostics: y1", message=FALSE, warning=FALSE}
+lm1 <- lm(rev ~ 0 + pop * genre)
+y1 <- lm1$residuals
+
+ggplot(sub3, aes(x = y1))+
+  geom_histogram(fill = "darkblue", color = "white") +
+  labs(x = "revenue (in thousand $)", y = "count")
+qqnorm(y1)
+qqline(y1)
+shapiro.test(y1)
+```
+
+```{r fig.cap="Plots of Predictors vs. y1", message=FALSE, warning=FALSE}
+# check the relationship between each predictor variable and y1
+a <- ggplot(sub3, aes(x = budget, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "budget (in thousand $)", y = "revenue (in thousand $)")
+b <- ggplot(sub3, aes(x = runtime, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "runtime (in minutes)", y = "revenue (in thousand $)")
+c <- ggplot(sub3, aes(x = popularity, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "popularity", y = "revenue (in thousand $)")
+d <- ggplot(sub3, aes(x = vote_count, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "vc", y = "revenue (in thousand $)")
+e <- ggplot(sub3, aes(x = vote_average, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "va", y = "revenue (in thousand $)")
+f <- ggplot(sub3, aes(x = genres, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "genres", y = "revenue (in thousand $)")
+g <- ggplot(sub3, aes(x = original_language, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "original lang", y = "revenue (in thousand $)")
+
+# divide the frame in grid using grid.arrange() and put above plots in it
+grid.arrange(a, b, c, d, e, f, g, ncol = 3, nrow = 3)
+```
+
+Model 1 was fitted with an interaction between *popularity* and *generes*, with
+an intercept set to 0. 
+
+As shown by the results, Model 1 does not pass the Shapiro-Wilk normality test
+and appears right-skewed.
+
+According to the scatter plots for each individual predictor variable against
+the Model 1 residuals, most predictors exhibited patterns except for *budget*,
+*popularity*, and *vote_count*. These three variables will be further observed
+before we decide whether to exclude them in the model.
+
+```{r fig.cap="Residual Diagnostics: y2", message=FALSE, warning=FALSE}
+lm2 <- lm(y1 ~ 0 + budget)
+y2 <- lm2$residuals
+
+ggplot(sub3, aes(x = y2))+
+  geom_histogram(fill = "darkblue", color = "white") +
+  labs(x = "revenue (in thousand $)", y = "count")
+qqnorm(y2)
+qqline(y2)
+shapiro.test(y2)
+```
+
+```{r fig.cap="Plots of Predictors vs. y2", message=FALSE, warning=FALSE}
+# check the relationship between each predictor variable and y1
+a <- ggplot(sub3, aes(x = budget, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "budget (in thousand $)", y = "revenue (in thousand $)")
+b <- ggplot(sub3, aes(x = runtime, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "runtime (in minutes)", y = "revenue (in thousand $)")
+c <- ggplot(sub3, aes(x = popularity, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "popularity", y = "revenue (in thousand $)")
+d <- ggplot(sub3, aes(x = vote_count, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "vc", y = "revenue (in thousand $)")
+e <- ggplot(sub3, aes(x = vote_average, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "va", y = "revenue (in thousand $)")
+f <- ggplot(sub3, aes(x = genres, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "genres", y = "revenue (in thousand $)")
+g <- ggplot(sub3, aes(x = original_language, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "original lang", y = "revenue (in thousand $)")
+
+# divide the frame in grid using grid.arrange() and put above plots in it
+grid.arrange(a, b, c, d, e, f, g, ncol = 3, nrow = 3)
+```
+
+Model 2 was fitted with *budget*, with an intercept set to 0. 
+
+Like Model 1, Model 2 does not pass the Shapiro-Wilk normality test and appears 
+right-skewed.
+
+The scatter plots still show that *budget*, *popularity*, and *vote_count* to
+have no effect on the response variable Moreover, *genres* seems to have become 
+constant as well. Since *budget* and *genres* are the two variables that we 
+wanted to focus on as stated in our hypothesis, we have decided to perform a 
+logarithmic transformation on *revenue* to see if this will make a difference. 
+
+```{r fig.cap="Plots of Predictor vs. lnrev", message=FALSE, warning=FALSE}
+# perform log transformation on revenue and edit the original data set to
+# exclude revenue and include lnrev
+lnrev <- log(sub3$revenue)
+sub3$lnrev <- lnrev
+sub3 <- sub3[, -5]
+
+# convert cat vars genres and original language to be binary data
+sub3$genres <- genre
+sub3$original_language <- o_lang
+
+# check the relationship between each predictor variable and lnrev
+a <- ggplot(sub3, aes(x = budget, y = lnrev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "budget (in thousand $)", y = "lnrev (in thousand $)")
+b <- ggplot(sub3, aes(x = runtime, y = lnrev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "runtime (in minutes)", y = "lnrev (in thousand $)")
+c <- ggplot(sub3, aes(x = popularity, y = lnrev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "popularity", y = "lnrev (in thousand $)")
+d <- ggplot(sub3, aes(x = vote_count, y = lnrev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "vc", y = "lnrev (in thousand $)")
+e <- ggplot(sub3, aes(x = vote_average, y = lnrev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "va", y = "lnrev (in thousand $)")
+f <- ggplot(sub3, aes(x = genres, y = lnrev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "genres", y = "lnrev (in thousand $)")
+g <- ggplot(sub3, aes(x = original_language, y = lnrev)) +
+  geom_point(color = "darkblue") +
+  labs(x = "original lang", y = "lnrev (in thousand $)")
+
+# divide the frame in grid using grid.arrange() and put above plots in it
+grid.arrange(a, b, c, d, e, f, g, ncol = 3, nrow = 3)
+```
+
+```{r fig.cap="Interaction Between popularity and genres", message=FALSE, warning=FALSE}
+# check interaction between pop and genre
+plot(pop, lnrev, type = "n")
+points(pop[genre == 0], lnrev[genre == 0], col="darkblue")
+points(pop[genre == 1], lnrev[genre == 1], col="darkred")
+```
+
+Similar to the results from before, the two variables overlap, suggesting a
+strong interaction between them.
+
+```{r fig.cap="Residual Diagnostics: y1", message=FALSE, warning=FALSE}
+lm1 <- lm(lnrev ~ 0 + pop * genre)
+y1 <- lm1$residuals
+
+ggplot(sub3, aes(x = y1))+
+  geom_histogram(fill = "darkblue", color = "white") +
+  labs(x = "lnrev (in thousand $)", y = "count")
+qqnorm(y1)
+qqline(y1)
+shapiro.test(y1)
+```
+
+```{r fig.cap="Plots of Predictors vs. y1", message=FALSE, warning=FALSE}
+# check the relationship between each predictor variable and y1
+a <- ggplot(sub3, aes(x = budget, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "budget (in thousand dollars)", y = "lnrev (in thousand $)")
+b <- ggplot(sub3, aes(x = runtime, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "runtime (in minutes)", y = "lnrev (in thousand $)")
+c <- ggplot(sub3, aes(x = popularity, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "popularity", y = "lnrev (in thousand $)")
+d <- ggplot(sub3, aes(x = vote_count, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "vc", y = "lnrev (in thousand $)")
+e <- ggplot(sub3, aes(x = vote_average, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "va", y = "lnrev (in thousand $)")
+f <- ggplot(sub3, aes(x = genres, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "genres", y = "lnrev (in thousand $)")
+g <- ggplot(sub3, aes(x = original_language, y = y1)) +
+  geom_point(color = "darkblue") +
+  labs(x = "original lang", y = "lnrev (in thousand $)")
+
+# divide the frame in grid using grid.arrange() and put above plots in it
+grid.arrange(a, b, c, d, e, f, g, ncol = 3, nrow = 3)
+```
+
+The new Model 1 was fitted with an interaction between *popularity* and
+*genres*, with an intercept set to 0. 
+
+It does not pass the Shapiro-Wilk normality test and now appears slightly
+left-skewed.
+
+All variables now appear to impact *lnrev* except *vote_average*. This means
+that our transformation has made a difference. We will continue to monitor
+*vote_average* before deciding whether or not to exclude it from the model.
+
