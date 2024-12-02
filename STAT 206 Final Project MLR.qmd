@@ -355,3 +355,6 @@ Only *popularity* passed the linearity check as it showed no distinct pattern.
 # check constant variance
 bptest(original.step)
 ```
+
+
+hello 
