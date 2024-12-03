@@ -660,3 +660,260 @@ All variables now appear to impact *lnrev* except *vote_average*. This means
 that our transformation has made a difference. We will continue to monitor
 *vote_average* before deciding whether or not to exclude it from the model.
 
+```{r fig.cap="Residual Diagnostics: y2", message=FALSE, warning=FALSE}
+lm2 <- lm(y1 ~ 0 + budget)
+y2 <- lm2$residuals
+
+ggplot(sub3, aes(x = y2))+
+  geom_histogram(fill = "darkblue", color = "white") +
+  labs(x = "lnrev (in thousand $)", y = "count")
+qqnorm(y2)
+qqline(y2)
+shapiro.test(y2)
+```
+
+```{r fig.cap="Plots of Predictors vs. y2", message=FALSE, warning=FALSE}
+# check the relationship between each predictor variable and y2
+a <- ggplot(sub3, aes(x = budget, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "budget (in thousand $)", y = "lnrev (in thousand $)")
+b <- ggplot(sub3, aes(x = runtime, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "runtime (in minutes)", y = "lnrev (in thousand $)")
+c <- ggplot(sub3, aes(x = popularity, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "popularity", y = "lnrev (in thousand $)")
+d <- ggplot(sub3, aes(x = vote_count, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "vc", y = "lnrev (in thousand $)")
+e <- ggplot(sub3, aes(x = vote_average, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "va", y = "lnrev (in thousand $)")
+f <- ggplot(sub3, aes(x = genres, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "genres", y = "lnrev (in thousand $)")
+g <- ggplot(sub3, aes(x = original_language, y = y2)) +
+  geom_point(color = "darkblue") +
+  labs(x = "original lang", y = "lnrev (in thousand $)")
+
+# divide the frame in grid using grid.arrange() and put above plots in it
+grid.arrange(a, b, c, d, e, f, g, ncol = 3, nrow = 3)
+```
+
+The new Model 2 was fitted with a single variable *budget* and a 0 intercept.
+
+It still does not pass the Shapiro-Wilk normality test and is slightly
+left-skewed.
+
+*vote_average* again exhibits no pattern, implying it does affect *lnrev*, and *runtime* now looks more constant than before. All the other variables seem
+to be impacting y.
+
+```{r fig.cap="Residual Diagnostics: y3", message=FALSE, warning=FALSE}
+lm3 <- lm(y2 ~ 0 + vc)
+y3 <- lm3$residuals
+
+ggplot(sub3, aes(x = y3))+
+  geom_histogram(fill = "darkblue", color = "white") +
+  labs(x = "lnrev (in thousand $)", y = "count")
+qqnorm(y3)
+qqline(y3)
+shapiro.test(y3)
+```
+
+```{r fig.cap="Plots of Predictors vs. y3", message=FALSE, warning=FALSE}
+# check the relationship between each predictor variable and y3
+a <- ggplot(sub3, aes(x = budget, y = y3)) +
+  geom_point(color = "darkblue") +
+  labs(x = "budget (in thousand $)", y = "lnrev (in thousand $)")
+b <- ggplot(sub3, aes(x = runtime, y = y3)) +
+  geom_point(color = "darkblue") +
+  labs(x = "runtime (in minutes)", y = "lnrev (in thousand $)")
+c <- ggplot(sub3, aes(x = popularity, y = y3)) +
+  geom_point(color = "darkblue") +
+  labs(x = "popularity", y = "lnrev (in thousand $)")
+d <- ggplot(sub3, aes(x = vote_count, y = y3)) +
+  geom_point(color = "darkblue") +
+  labs(x = "vc", y = "lnrev (in thousand $)")
+e <- ggplot(sub3, aes(x = vote_average, y = y3)) +
+  geom_point(color = "darkblue") +
+  labs(x = "va", y = "lnrev (in thousand $)")
+f <- ggplot(sub3, aes(x = genres, y = y3)) +
+  geom_point(color = "darkblue") +
+  labs(x = "genres", y = "lnrev (in thousand $)")
+g <- ggplot(sub3, aes(x = original_language, y = y3)) +
+  geom_point(color = "darkblue") +
+  labs(x = "original lang", y = "lnrev (in thousand $)")
+
+# divide the frame in grid using grid.arrange() and put above plots in it
+grid.arrange(a, b, c, d, e, f, g, ncol = 3, nrow = 3)
+```
+
+Model 3 was fitted with *vote_count* and an intercep of 0. 
+
+Like the previous two models, this model is left-skewed and does not pass the Shapiro-Wilk test.
+
+We will be taking out *vote_average* and *runtime*, with the latter collapsing
+more, as these two look constant compared to all other variables.
+
+Before continuing further analysis, we have decided to transform *popularity*
+with a square root transformation for easier computation and model fitting and
+hoping this will help us pass the normality assumption check.
+
+```{r fig.cap="Residual Diagnostics: y4", message=FALSE, warning=FALSE}
+# perform square root transformation on popularity and edit the data set to
+# exclude popularity and include popsqrt
+popsqrt <- sqrt(pop)
+sub3$popsqrt <- popsqrt
+sub3 <- sub3[, -3]
+
+# fit the model using the interaction between popsqrt and genres
+lm4 <- lm(y3 ~ 0 + popsqrt * genre)
+y4 <- lm4$residuals
+
+ggplot(sub3, aes(x = y4))+
+  geom_histogram(fill = "darkblue", color = "white") +
+  labs(x = "lnrev (in thousand $)", y = "count")
+qqnorm(y4)
+qqline(y4)
+shapiro.test(y4)
+```
+
+```{r fig.cap="Plots of Predictors vs. y4", message=FALSE, warning=FALSE}
+# check the relationship between each predictor variable and y4
+a <- ggplot(sub3, aes(x = budget, y = y4)) +
+  geom_point(color = "darkblue")+
+  labs(x = "budget (in thousand $)", y = "lnrev (in thousand $)")
+b <- ggplot(sub3, aes(x = popsqrt, y = y4)) +
+  geom_point(color = "darkblue") +
+  labs(x = "popularity", y = "lnrev (in thousand $)")
+c <- ggplot(sub3, aes(x = vote_count, y = y4)) +
+  geom_point(color = "darkblue") +
+  labs(x = "vc", y = "lnrev (in thousand $)")
+d <- ggplot(sub3, aes(x = genres, y = y3)) +
+  geom_point(color = "darkblue") +
+  labs(x = "genres", y = "lnrev (in thousand $)")
+e <- ggplot(sub3, aes(x = original_language, y = y3)) +
+  geom_point(color = "darkblue") +
+  labs(x = "original lang", y = "lnrev (in thousand $)")
+
+# divide the frame in grid using grid.arrange() and put above plots in it
+grid.arrange(a, b, c, d, e, ncol = 3, nrow = 2)
+```
+
+Model 3 residuals were used as my response for Model 4, which incorporated the
+interaction between *popsqrt* and *genres* with a 0 intercept.
+
+While the residuals of the new model still failed the Shapiro-Wilk test and
+appear to be left-skewed, all predictors were shown to be affecting *lnrev*.
+
+```{r fig.cap="Residual Diagnostics: lm5", message=FALSE, warning=FALSE}
+# fit first full model
+lm5 <- lm(lnrev ~ 0 + budget + popsqrt * genre + o_lang + vc)
+summary(lm5)
+
+# check the residual assumptions
+ggplot(sub3, aes(x = lm5$residuals))+
+  geom_histogram(fill = "darkblue", color = "white") +
+  labs(x = "lnrev (in thousand $)", y = "count")
+qqnorm(lm5$residuals)
+qqline(lm5$residuals)
+ggplot(sub3, aes(x = lm5$fitted.values, y = lm5$residuals)) +
+  geom_point(color = "darkblue") +
+  labs(x = "Fitted Values", y = "Residuals")
+
+shapiro.test(lm5$residuals)
+durbinWatsonTest(lm5)
+bptest(lm5)
+```
+
+Although this model produced a high adjusted $R^2$ value of 0.9578, the
+residuals of this model did not pass the normality check, did not exhibit
+significant autocorrelation, and lacked homoscedasticity.
+
+All predictors are shown to be statistically significant.
+
+```{r fig.cap="Pairwise Comparison for Model 4", message=FALSE, warning=FALSE}
+# edit the data set to exclude runtime and vote average
+sub3 <- sub3[, -c(4, 5)]
+
+# create pairwise scatter plots and coefficient of correlation
+ggpairs(sub3) + theme(axis.text.x = element_text(size= 2.5, angle = 90),
+                      axis.text.y = element_text(size = 2.5),
+                      strip.text.y = element_text(angle = 0))
+```
+
+Similar to the results of our initial pairwise comparison, majority of the
+predictor variables do not exhibit multicollinearity. An intermediate
+correlation between *budget* and *lnrev* is expected, as this is one of the
+variables we wanted to take a closer look at and one of our hypotheses.
+
+```{r, message=FALSE, warning=FALSE}
+# perform forward stepwise regression and use this model as Model 6
+
+# specify a null model with no predictors
+null.model <- lm(lnrev ~ 0, data = sub3)
+
+# use a stepwise algorithm to build a parsimonious model
+# null to full
+lm6 <- step(null.model,
+            scope = list(lower = null.model, upper = lm5),
+            direction = "both", test = "F")
+summary(lm6)
+
+# check the residual assumptions
+ggplot(sub3, aes(x = lm6$residuals))+
+  geom_histogram(fill = "darkblue", color = "white") +
+  labs(x = "lnrev (in thousand $)", y = "count")
+qqnorm(lm6$residuals)
+qqline(lm6$residuals)
+ggplot(sub3, aes(x = lm6$fitted.values, y = lm6$residuals)) +
+  geom_point(color = "darkblue") +
+  labs(x = "Fitted Values", y = "Residuals")
+
+shapiro.test(lm6$residuals)
+durbinWatsonTest(lm6)
+bptest(lm6)
+```
+
+Model 6 yielded the exact same results as Model 5. Therefore, there's no need
+to do further model comparison, and we choose Model 5 as our final model.
+
+### Final Model Diagnostics
+
+```{r, message=FALSE, warning=FALSE}
+final.model <- lm(lnrev ~ 0 + budget + popsqrt * genre + o_lang + vc)
+
+# non-significant F-tests with overall significant F-test
+summary(final.model)
+
+# variance inflation factor (VIF)
+vif(final.model)
+
+# check the residual assumptions
+ggplot(sub3, aes(x = final.model$residuals))+
+  geom_histogram(fill = "darkblue", color = "white") +
+  labs(x = "lnrev (in thousand $)", y = "count")
+
+qqnorm(final.model$residuals)
+qqline(final.model$residuals)
+ggplot(sub3, aes(x = final.model$fitted.values, y = final.model$residuals)) +
+  geom_point(color = "darkblue") +
+  labs(x = "Fitted Values", y = "Residuals")
+
+shapiro.test(final.model$residuals)
+durbinWatsonTest(final.model)
+bptest(final.model)
+```
+
+The final model has a robust adjusted $R^2$ value of 0.9578. It also
+demonstrates statistical significance by rejecting my null hypothesis with a
+$p$-value much below the predetermined significance level $\alpha$ = 0.05.
+
+However, our final model did not pass the normality or the constant variance
+checks. The model also has VIF scores below 10 between its predictors. This
+also corresponds to the results of the pairwise comparisons.
+
+In conclusion, regardless of its shortcomings, we accept Model 5 as our final
+model.
+
+# Differential Privacy
