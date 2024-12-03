@@ -1,5 +1,5 @@
 ---
-title: "STAT 206 Final Project MLR and DP"
+title: "STAT 206 Final Project MLR"
 author: "Axel Galicia Lona, Linlin Liu, amd Nancy Lopez"
 date: "2024-12-13"
 echo: true
