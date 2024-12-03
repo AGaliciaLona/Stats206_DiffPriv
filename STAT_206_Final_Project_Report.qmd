@@ -153,25 +153,26 @@ while protecting privacy.
 
 Another great benefit of using this package is that it’s not very complicated
 to use. The first step is to set a target function, which means one has to set 
-what we want to privatize. This could be a dataset, a mean value, or in our
-case linear regression coefficients. Next we determine the sensitivity manually,
-since we are using a Laplace distribution we calculate the sensitivity by $\frac{1}{n}$, being the number of observations in our dataset. This is
-because, for queries like mean or regression coefficients, the impact of one
-data point is smaller as the dataset grows. So, with larger datasets, the noise
-needed to protect privacy is reduced, as the influence of any single data point becomes less significant. This makes the process more efficient while still
-ensuring privacy.
+what is to be privatized. This could be a dataset, a mean value, or, in the
+case of this project, linear regression coefficients. Next, we determine the sensitivity manually by using the Laplace distribution. The global sensitivity
+is$\frac{1}{n}$, where n is the number of observations in our final MLR model.
+This is because, for queries like mean or regression coefficients, the impact
+of one data point is smaller as the dataset grows. So, with larger datasets,
+the noise needed to protect privacy is reduced, as the influence of any single
+data point becomes less significant. This makes the process more efficient
+while still ensuring privacy.
 
 The next step is to determine the privacy budget $\epsilon$, which controls the
 trade-off between privacy and accuracy. A high privacy budget means less noise, 
 resulting in less privacy being protected, and a low privacy budget means more
-noise is added to the dataset, which means more privacy. In our cas,e we chose 
-a privacy budget one 1, which balances accuracy and privacy in a moderate way. 
+noise and thus more privacy is added to the dataset. In our case, we chose 
+a privacy budget of 1, which balances accuracy and privacy in a moderate way. 
 After establishing our privacy parameters, which determine how much noise to
-add, we can use the DPMechLaplace() function. This function adds Laplace noise 
-to the query results. Once the noise is applied, we can release the privatized 
-output using the releaseResponse() function. This will show how the data looks 
-with the noise, which is what you would provide to a third party, ensuring that
-the privacy of individuals is protected.
+add, we apply the *DPMechLaplace()* function. This function adds Laplace noise 
+to the query results. Once the noise is applied, we release the privatized 
+output using the *releaseResponse()* function. This shows how the data looks 
+with the noise. This is the final result to be providedi to a third-party,
+ensuring that the privacy of individuals is protected.
 
 # Implementation of DiffPriv
 
