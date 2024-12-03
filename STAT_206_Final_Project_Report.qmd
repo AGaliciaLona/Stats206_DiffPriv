@@ -43,12 +43,11 @@ social media buzz, applying statistical models becomes a valuable tool for
 analysis. Thus, we chose to build a multilinear regression model for our
 project.
 
-Differential privacy (DP) is crucial for datasets containing sensitive aspects
-of movies, such as budget, revenue, cast, and others, as it ensures that
-individual data points cannot be traced back to their sources. For instance,
-protecting details like a movie's budget prevents competitors from exploiting
-financial strategies, while preserving anonymity in user-related data
-safeguards privacy rights. By adding controlled random noise to the data,
+Differential privacy (DP) is essential for datasets containing sensitive
+aspects of movies, such as budget, revenue, cast, and others, as it ensures
+that individual data points cannot be traced back to their sources. For
+instance, protecting details like a movie's budget prevents competitors from exploiting financial strategies, while preserving anonymity in user-related
+data safeguards privacy rights. By adding controlled random noise to the data,
 differential privacy balances utility with confidentiality, enabling meaningful
 analysis without exposing proprietary or personal information.
 
@@ -64,40 +63,40 @@ organizations to extract valuable insights without compromising individual
 privacy.
 
 The formal definition of DP states that for any 2 datasets, D and D' differing
-by one individual data point, the probability of mechanism M producing a
+by one individual data point, the probability of mechanism $M$ producing a
 certain result should be very close for both datasets. This can be
 mathematically expressed as: $Pr(M(D)\in R)\leq exp(\epsilon)*Pr(M(D') \in R)$
 where $\epsilon$ is the privacy parameter. A small privacy parameter means 
 strong privacy since the output reveals less information about individual data.
-By having two similar datasets, one missing a data point, it becomes extremely 
-difficult to guess whether a specific persons data was used; therefore
-protecting individuals privacy. 
+By having two similar datasets with one missing a data point, it becomes
+extremely difficult to guess whether a specific persons data was used, hence
+protecting individuals' privacy. 
 
 A good noise-adding mechanism should privatize data while maintaining its
 usefulness, enabling meaningful analysis without risking individuals’ sensitive
 information. This method is particularly important in today's world, where vast
-amounts of data are constantly being collected. From our phones and social media
-platforms to streaming services and other technologies, our data is tracked to 
-provide better algorithms and more personalized recommendations. DP plays a 
-crucial role in protecting our privacy in fields like healthcare, technology, 
-and beyond.
+amounts of data are constantly being collected. From our phones and social
+media platforms to streaming services and other technologies, our data is
+tracked to provide better algorithms and more personalized recommendations. DP
+plays a crucial role in protecting our privacy in fields like healthcare,
+technology, and beyond.
  
 ## DP Examples
 
-DP introduces mathematical noise to data or results, ensuring that insights can
-be derived without revealing specific details about any individual in the
-dataset. This balance between utility and privacy has made DP an essential tool
-in modern data-driven industries.
+DP introduces mathematical noise to the data, ensuring that insights can be
+derived without revealing specific details about any individual involved. This
+balance between utility and privacy has made DP an essential tool in modern data-driven industries.
 
 Tech companies like Apple and Google are pioneers in integrating DP into their services. For example, Apple uses DP in features like QuickType, where it
 analyzes typing patterns to improve text prediction and autocorrect
 functionality. This ensures no sensitive typing data is accessible to the
 company while still enabling advanced machine learning models to learn user
-behaviors. Similarly, differential privacy underpins Apple's emoji and media
+behaviors. Similarly, differential privacy underpins Apple's emojis and media
 usage analytics, which help them refine features across devices without linking
 data to individual users.
 
-On the other hand, Google leverages DP in tools like Google Maps and its Chrome browser. For instance, it can aggregate traffic patterns or detect website
+Google, on the other hand, leverages DP in tools like Google Maps and its
+Chrome browser. This can aggregate traffic patterns or detect website
 performance issues without identifying specific users or their locations,
 providing valuable insights while maintaining anonymity.
 
@@ -109,14 +108,17 @@ publicly available information. This ensures that privacy is upheld while
 still providing accurate and actionable population trends for resource
 allocation, urban planning, and legislative redistricting.
 
-Another field that uses DP is the healthcare sector. Hospitals and research institutions can share anonymized patient data for large-scale studies, like predicting disease outbreaks or evaluating treatment efficacy. DP ensures that
-even if the dataset is intercepted, it is mathematically improbable for
-attackers to extract identifiable patient information.
+Another field that widely employs DP is the healthcare sector. Hospitals and
+research institutions can share anonymized patient data for large-scale
+studies, like predicting disease outbreaks or evaluating treatment efficacy. DP ensures that even if the dataset is intercepted, it is mathematically
+improbable for attackers to extract identifiable patient information.
 
 Lastly, DP is increasingly used in online education platforms and remote work
-tools to safeguard user data. For example, platforms like Coursera and Duolingo
-might employ DP to analyze user progress and learning habits while protecting individual study behaviors. Tools like Zoom or Microsoft Teams could use DP in aggregating call analytics, such as meeting durations or user engagement
-trends, while ensuring participant anonymity.
+tools to safeguard user data. For instance, platforms like Coursera and
+Duolingo might use DP to analyze user progress and learning habits while
+protecting individual study behaviors. Tools like Zoom or Microsoft Teams could
+use DP in aggregating call analytics, such as meeting duration or user
+engagement trends, while ensuring participant anonymity.
 
 By enabling secure data analysis, DP empowers industries to innovate without
 eroding public trust. This is especially critical in a world increasingly
@@ -129,24 +131,25 @@ and an ethical responsibility.
 
 # DiffPriv package
 
-We implemented differential privacy to our data through an R package called 
-‘diffpriv’. This package provides tools that support differential privacy,
+We implemented DP to the movies dataest through an R package called 
+*diffpriv*. This package provides tools that support differential privacy,
 making it suitable for releasing analyses on sensitive data to third parties.
-Diffpriv implements genetic mechanisms and a sensitivity sampler that replaces 
-the exact sensitivity bounds with empirical estimates. This is convenient since 
-calculating the exact sensitivity can be very complex and computationally 
-expensive. Usually for DP noise is added to the results of a query, based on
-the sensitivity of the query. When a query has high sensibility it means the
-data can be easily affected by one individual data point, therefore high
-sensitivity means we need more noise. However, less sensitivity means the query
-needs less noise. When using diffpriv, instead of calculating the worst-case
-sensitivity, we have the sensitivity sampler which estimates the sensitivity 
-based on the sample data given. This is very useful because one does not have 
-to do all complicated calculations in order to obtain the sensitivity, 
-therefore it’s time efficient. It also is very practical since when working
-with real data, it obtains a good estimate for most queries, including large 
-datasets. Lastly, using this method can add more precise data, leading to more
-accurate results while protecting privacy. 
+*diffpriv* implements genetic mechanisms and a sensitivity sampler that
+replaces the exact sensitivity bounds with empirical estimates. This is
+convenient since calculating the exact sensitivity can be very complex and computationally expensive.
+
+DP noise is usually added to the results of a query, based on the sensitivity
+of the query. When a query has high sensibility, the data can be easily
+affected by one individual data point, therefore high sensitivity implies the
+application of more noise. Less sensitivity, on the other hand, needs less
+noise.
+
+When using *diffpriv*, instead of calculating the worst-case sensitivity, we
+have the sensitivity sampler that estimates the sensitivity based on the sample
+data given. This is very useful because one does not have to do all complicated calculations in order to obtain the sensitivity, making the process much more
+time efficient. It also is very practical since when working with real data, it obtains a good estimate for most queries, even for large datasets. Lastly,
+using this method can add more precise data, leading to more accurate results
+while protecting privacy. 
 
 Another great benefit of using this package is that it’s not very complicated
 to use. The first step is to set a target function, which means one has to set 
