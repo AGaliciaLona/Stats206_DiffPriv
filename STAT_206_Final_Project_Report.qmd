@@ -11,6 +11,9 @@ format:
     code-line-numbers: true
   pdf:
     code-line-numbers: true
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 \newpage
@@ -25,154 +28,177 @@ format:
 
 ## Background and Motivation
 
-Movies are a visual art form that simulates and communicates thoughts, actions,
-ideas, and realities by combining camera recordings with sound. With rapid
-population expansion and technical improvement, the movie industry grows
-increasingly sophisticated. The industry's maturity has also boosted the rate
-at which movies are made and produced, and every year, a new batch of films is 
-released in theaters. Therefore, studios, producers, and investors need
-reliable predictions to make informed decisions about budgeting, marketing,
-and resource allocation.
+Movies are a visual art form that simulates and communicates thoughts,
+actions, ideas, and realities by combining camera recordings with sound.
+With rapid population expansion and technical improvement, the movie
+industry grows increasingly sophisticated. The industry's maturity has
+also boosted the rate at which movies are made and produced, and every
+year, a new batch of films is released in theaters. Therefore, studios,
+producers, and investors need reliable predictions to make informed
+decisions about budgeting, marketing, and resource allocation.
 
-As viewers, we are also interested in the factors that contribute to a film's
-revenue, because these generally define its success. Furthermore, the highly 
-competitive nature of the film industry, as well as the huge economic impact of
-movie income, motivated us to pursue this project. With abundant data available
-on various aspects of movies, including budget, cast, genre, release dates, and
-social media buzz, applying statistical models becomes a valuable tool for
-analysis. Thus, we chose to build a multilinear regression model for our
-project.
+As viewers, we are also interested in the factors that contribute to a
+film's revenue, because these generally define its success. Furthermore,
+the highly competitive nature of the film industry, as well as the huge
+economic impact of movie income, motivated us to pursue this project.
+With abundant data available on various aspects of movies, including
+budget, cast, genre, release dates, and social media buzz, applying
+statistical models becomes a valuable tool for analysis. Thus, we chose
+to build a multilinear regression model for our project.
 
 Differential privacy (DP) is essential for datasets containing sensitive
-aspects of movies, such as budget, revenue, cast, and others, as it ensures
-that individual data points cannot be traced back to their sources. For
-instance, protecting details like a movie's budget prevents competitors from exploiting financial strategies, while preserving anonymity in user-related
-data safeguards privacy rights. By adding controlled random noise to the data,
-differential privacy balances utility with confidentiality, enabling meaningful
-analysis without exposing proprietary or personal information.
+aspects of movies, such as budget, revenue, cast, and others, as it
+ensures that individual data points cannot be traced back to their
+sources. For instance, protecting details like a movie's budget prevents
+competitors from exploiting financial strategies, while preserving
+anonymity in user-related data safeguards privacy rights. By adding
+controlled random noise to the data, differential privacy balances
+utility with confidentiality, enabling meaningful analysis without
+exposing proprietary or personal information.
 
 # Introduction To Differential Privacy
 
 DP is a statistical framework designed to protect individuals' sensitive
-information in a dataset. It protects privacy by adding random noise to the
-outputs of data analyses before they are shared with any third-party such as scientists, companies, or other analysts. This ensures that no single
-individual's data can be identified or inferred, even if someone has 
-additional knowledge about the dataset. The goal of DP is to balance privacy
-protection with the need for accurate and meaningful data analysis, allowing 
-organizations to extract valuable insights without compromising individual 
-privacy.
+information in a dataset. It protects privacy by adding random noise to
+the outputs of data analyses before they are shared with any third-party
+such as scientists, companies, or other analysts. This ensures that no
+single individual's data can be identified or inferred, even if someone
+has additional knowledge about the dataset. The goal of DP is to balance
+privacy protection with the need for accurate and meaningful data
+analysis, allowing organizations to extract valuable insights without
+compromising individual privacy.
 
-The formal definition of DP states that for any 2 datasets, D and D' differing
-by one individual data point, the probability of mechanism $M$ producing a
-certain result should be very close for both datasets. This can be
-mathematically expressed as: $Pr(M(D)\in R)\leq exp(\epsilon)*Pr(M(D') \in R)$
-where $\epsilon$ is the privacy parameter. A small privacy parameter means 
-strong privacy since the output reveals less information about individual data.
-By having two similar datasets with one missing a data point, it becomes
-extremely difficult to guess whether a specific persons data was used, hence
-protecting individuals' privacy. 
+The formal definition of DP states that for any 2 datasets, D and D'
+differing by one individual data point, the probability of mechanism $M$
+producing a certain result should be very close for both datasets. This
+can be mathematically expressed as:
+$Pr(M(D)\in R)\leq exp(\epsilon)*Pr(M(D') \in R)$ where $\epsilon$ is
+the privacy parameter. A small privacy parameter means strong privacy
+since the output reveals less information about individual data. By
+having two similar datasets with one missing a data point, it becomes
+extremely difficult to guess whether a specific persons data was used,
+hence protecting individuals' privacy.
 
-A good noise-adding mechanism should privatize data while maintaining its
-usefulness, enabling meaningful analysis without risking individuals’ sensitive
-information. This method is particularly important in today's world, where vast
-amounts of data are constantly being collected. From our phones and social
-media platforms to streaming services and other technologies, our data is
-tracked to provide better algorithms and more personalized recommendations. DP
-plays a crucial role in protecting our privacy in fields like healthcare,
-technology, and beyond.
- 
+A good noise-adding mechanism should privatize data while maintaining
+its usefulness, enabling meaningful analysis without risking
+individuals’ sensitive information. This method is particularly
+important in today's world, where vast amounts of data are constantly
+being collected. From our phones and social media platforms to streaming
+services and other technologies, our data is tracked to provide better
+algorithms and more personalized recommendations. DP plays a crucial
+role in protecting our privacy in fields like healthcare, technology,
+and beyond.
+
 ## DP Examples
 
-DP introduces mathematical noise to the data, ensuring that insights can be
-derived without revealing specific details about any individual involved. This
-balance between utility and privacy has made DP an essential tool in modern data-driven industries.
+DP introduces mathematical noise to the data, ensuring that insights can
+be derived without revealing specific details about any individual
+involved. This balance between utility and privacy has made DP an
+essential tool in modern data-driven industries.
 
-Tech companies like Apple and Google are pioneers in integrating DP into their services. For example, Apple uses DP in features like QuickType, where it
-analyzes typing patterns to improve text prediction and autocorrect
-functionality. This ensures no sensitive typing data is accessible to the
-company while still enabling advanced machine learning models to learn user
-behaviors. Similarly, differential privacy underpins Apple's emojis and media
-usage analytics, which help them refine features across devices without linking
-data to individual users.
+Tech companies like Apple and Google are pioneers in integrating DP into
+their services. For example, Apple uses DP in features like QuickType,
+where it analyzes typing patterns to improve text prediction and
+autocorrect functionality. This ensures no sensitive typing data is
+accessible to the company while still enabling advanced machine learning
+models to learn user behaviors. Similarly, differential privacy
+underpins Apple's emojis and media usage analytics, which help them
+refine features across devices without linking data to individual users.
 
-Google, on the other hand, leverages DP in tools like Google Maps and its
-Chrome browser. This can aggregate traffic patterns or detect website
-performance issues without identifying specific users or their locations,
-providing valuable insights while maintaining anonymity.
+Google, on the other hand, leverages DP in tools like Google Maps and
+its Chrome browser. This can aggregate traffic patterns or detect
+website performance issues without identifying specific users or their
+locations, providing valuable insights while maintaining anonymity.
 
-Governments, including the U.S. Census Bureau, rely on DP as well to protect participants' confidentiality. In the 2020 Census, DP was introduced to
-anonymize demographic data shared with policymakers, researchers, and the
-public. By adding noise to reported statistics, the system prevents attackers
-from deducing private details, even if datasets are combined with other
-publicly available information. This ensures that privacy is upheld while
-still providing accurate and actionable population trends for resource
-allocation, urban planning, and legislative redistricting.
+Governments, including the U.S. Census Bureau, rely on DP as well to
+protect participants' confidentiality. In the 2020 Census, DP was
+introduced to anonymize demographic data shared with policymakers,
+researchers, and the public. By adding noise to reported statistics, the
+system prevents attackers from deducing private details, even if
+datasets are combined with other publicly available information. This
+ensures that privacy is upheld while still providing accurate and
+actionable population trends for resource allocation, urban planning,
+and legislative redistricting.
 
-Another field that widely employs DP is the healthcare sector. Hospitals and
-research institutions can share anonymized patient data for large-scale
-studies, like predicting disease outbreaks or evaluating treatment efficacy. DP ensures that even if the dataset is intercepted, it is mathematically
-improbable for attackers to extract identifiable patient information.
+Another field that widely employs DP is the healthcare sector. Hospitals
+and research institutions can share anonymized patient data for
+large-scale studies, like predicting disease outbreaks or evaluating
+treatment efficacy. DP ensures that even if the dataset is intercepted,
+it is mathematically improbable for attackers to extract identifiable
+patient information.
 
-Lastly, DP is increasingly used in online education platforms and remote work
-tools to safeguard user data. For instance, platforms like Coursera and
-Duolingo might use DP to analyze user progress and learning habits while
-protecting individual study behaviors. Tools like Zoom or Microsoft Teams could
-use DP in aggregating call analytics, such as meeting duration or user
-engagement trends, while ensuring participant anonymity.
+Lastly, DP is increasingly used in online education platforms and remote
+work tools to safeguard user data. For instance, platforms like Coursera
+and Duolingo might use DP to analyze user progress and learning habits
+while protecting individual study behaviors. Tools like Zoom or
+Microsoft Teams could use DP in aggregating call analytics, such as
+meeting duration or user engagement trends, while ensuring participant
+anonymity.
 
-By enabling secure data analysis, DP empowers industries to innovate without
-eroding public trust. This is especially critical in a world increasingly
-reliant on data for decision-making, where user privacy is both a legal mandate
-and an ethical responsibility.
+By enabling secure data analysis, DP empowers industries to innovate
+without eroding public trust. This is especially critical in a world
+increasingly reliant on data for decision-making, where user privacy is
+both a legal mandate and an ethical responsibility.
 
 # Noise Implementation Methods
 
--   the types of noise implantation
+The three most common noise implementation methods for Differential
+Privacy are Gaussian, Laplace and Exponential. For this project we used
+the Laplace mechanism which provides $(\epsilon,0)$ differential privacy. 
+The Laplace mechanism ensures privacy by adding noise sampled from a Laplace 
+distribution to query results. The noise is drawn as $X\sim Laplace(0,\Delta f/\epsilon)$
 
 # DiffPriv package
 
-We implemented DP to the movies dataest through an R package called 
-*diffpriv*. This package provides tools that support differential privacy,
-making it suitable for releasing analyses on sensitive data to third parties.
-*diffpriv* implements genetic mechanisms and a sensitivity sampler that
-replaces the exact sensitivity bounds with empirical estimates. This is
-convenient since calculating the exact sensitivity can be very complex and computationally expensive.
+We implemented DP to the movies dataest through an R package called
+*diffpriv*. This package provides tools that support differential
+privacy, making it suitable for releasing analyses on sensitive data to
+third parties. *diffpriv* implements genetic mechanisms and a
+sensitivity sampler that replaces the exact sensitivity bounds with
+empirical estimates. This is convenient since calculating the exact
+sensitivity can be very complex and computationally expensive.
 
-DP noise is usually added to the results of a query, based on the sensitivity
-of the query. When a query has high sensibility, the data can be easily
-affected by one individual data point, therefore high sensitivity implies the
-application of more noise. Less sensitivity, on the other hand, needs less
-noise.
+DP noise is usually added to the results of a query, based on the
+sensitivity of the query. When a query has high sensibility, the data
+can be easily affected by one individual data point, therefore high
+sensitivity implies the application of more noise. Less sensitivity, on
+the other hand, needs less noise.
 
-When using *diffpriv*, instead of calculating the worst-case sensitivity, we
-have the sensitivity sampler that estimates the sensitivity based on the sample
-data given. This is very useful because one does not have to do all complicated calculations in order to obtain the sensitivity, making the process much more
-time efficient. It also is very practical since when working with real data, it obtains a good estimate for most queries, even for large datasets. Lastly,
-using this method can add more precise data, leading to more accurate results
-while protecting privacy. 
+When using *diffpriv*, instead of calculating the worst-case
+sensitivity, we have the sensitivity sampler that estimates the
+sensitivity based on the sample data given. This is very useful because
+one does not have to do all complicated calculations in order to obtain
+the sensitivity, making the process much more time efficient. It also is
+very practical since when working with real data, it obtains a good
+estimate for most queries, even for large datasets. Lastly, using this
+method can add more precise data, leading to more accurate results while
+protecting privacy.
 
-Another great benefit of using this package is that it’s not very complicated
-to use. The first step is to set a target function, which means one has to set 
-what is to be privatized. This could be a dataset, a mean value, or, in the
-case of this project, linear regression coefficients. Next, we determine the sensitivity manually by using the Laplace distribution. The global sensitivity
-is$\frac{1}{n}$, where n is the number of observations in our final MLR model.
-This is because, for queries like mean or regression coefficients, the impact
-of one data point is smaller as the dataset grows. So, with larger datasets,
-the noise needed to protect privacy is reduced, as the influence of any single
-data point becomes less significant. This makes the process more efficient
-while still ensuring privacy.
+Another great benefit of using this package is that it’s not very
+complicated to use. The first step is to set a target function, which
+means one has to set what is to be privatized. This could be a dataset,
+a mean value, or, in the case of this project, linear regression
+coefficients. Next, we determine the sensitivity manually by using the
+Laplace distribution. The global sensitivity is$\frac{1}{n}$, where n is
+the number of observations in our final MLR model. This is because, for
+queries like mean or regression coefficients, the impact of one data
+point is smaller as the dataset grows. So, with larger datasets, the
+noise needed to protect privacy is reduced, as the influence of any
+single data point becomes less significant. This makes the process more
+efficient while still ensuring privacy.
 
-The next step is to determine the privacy budget $\epsilon$, which controls the
-trade-off between privacy and accuracy. A high privacy budget means less noise, 
-resulting in less privacy being protected, and a low privacy budget means more
-noise and thus more privacy is added to the dataset. In our case, we chose 
-a privacy budget of 1, which balances accuracy and privacy in a moderate way. 
-After establishing our privacy parameters, which determine how much noise to
-add, we apply the *DPMechLaplace()* function. This function adds Laplace noise 
-to the query results. Once the noise is applied, we release the privatized 
-output using the *releaseResponse()* function. This shows how the data looks 
-with the noise. This is the final result to be providedi to a third-party,
-ensuring that the privacy of individuals is protected.
+The next step is to determine the privacy budget $\epsilon$, which
+controls the trade-off between privacy and accuracy. A high privacy
+budget means less noise, resulting in less privacy being protected, and
+a low privacy budget means more noise and thus more privacy is added to
+the dataset. In our case, we chose a privacy budget of 1, which balances
+accuracy and privacy in a moderate way. After establishing our privacy
+parameters, which determine how much noise to add, we apply the
+*DPMechLaplace()* function. This function adds Laplace noise to the
+query results. Once the noise is applied, we release the privatized
+output using the *releaseResponse()* function. This shows how the data
+looks with the noise. This is the final result to be providedi to a
+third-party, ensuring that the privacy of individuals is protected.
 
 # Implementation of DiffPriv
 
