@@ -143,10 +143,86 @@ both a legal mandate and an ethical responsibility.
 # Noise Implementation Methods
 
 The three most common noise implementation methods for Differential
-Privacy are Gaussian, Laplace and Exponential. For this project we used
-the Laplace mechanism which provides $(\epsilon,0)$ differential privacy. 
-The Laplace mechanism ensures privacy by adding noise sampled from a Laplace 
-distribution to query results. The noise is drawn as $X\sim Laplace(0,\Delta f/\epsilon)$
+Privacy are Gaussian, Laplace, and Exponential. For this project, we
+used the Laplace mechanism, which provides $(\epsilon, 0)$-differential
+privacy by adding noise sampled from a Laplace distribution to query
+results. The noise is drawn as
+$X \sim \text{Laplace}(0, \Delta f / \epsilon)$, where $0$ is the mean
+of the distribution, $\Delta f$ is the sensitivity of the query, and
+$\epsilon$ is the privacy budget. The sensitivity $\Delta f$ represents
+the maximum change in a query result caused by the addition or removal
+of a single data point and is proportional to the $L_1$ sensitivity of
+the query, which measures this maximum change using the sum of absolute
+differences.
+
+The Laplace mechanism has two key implications: (1) the added noise is
+proportional to the $L_1$ sensitivity of the query, and (2) the noise
+magnitude is inversely related to the privacy budget $\epsilon$. A
+smaller $\epsilon$ value results in stronger privacy by adding more
+noise, making it harder to infer individual data points, whereas a
+larger $\epsilon$ value reduces noise, improving accuracy at the cost of
+weaker privacy guarantees. Sensitivity $\Delta f$ depends on the dataset
+and query, while $\epsilon$ is independent of both and serves as a
+user-defined parameter to balance privacy and utility. The Laplace
+mechanism is particularly effective for numerical queries with low or
+intermediate $L_1$ sensitivity but is less suited for high-sensitivity
+queries, where large noise may reduce data utility. Additionally, it
+does not apply to non-numerical queries.
+
+The Gaussian mechanism is another commonly used method for implementing
+differential privacy, providing $(\epsilon, \delta)$-differential
+privacy. Unlike the Laplace mechanism, which adds noise from a Laplace
+distribution, the Gaussian mechanism adds noise sampled from a Gaussian
+(normal) distribution. The noise is drawn as
+$X \sim \mathcal{N}(0, \sigma^2)$, where $0$ is the mean of the
+distribution, and $\sigma$ is the standard deviation of the noise. The
+standard deviation $\sigma$ is determined by the query's sensitivity
+$\Delta f$, the privacy budget $\epsilon$, and a small relaxation
+parameter $\delta$ according to the formula
+$\sigma = \frac{\Delta f \cdot \sqrt{2 \ln(1.25/\delta)}}{\epsilon}$.
+
+The sensitivity $\Delta f$ represents the maximum change in the query
+result caused by the addition or removal of a single data point and can
+be measured using either $L_1$ or $L_2$ sensitivity. The Gaussian
+mechanism is particularly well-suited for numerical queries where $L_2$
+sensitivity, calculated using the Euclidean norm, is smaller than $L_1$
+sensitivity, allowing for less noise to be added.
+
+The key difference between the Gaussian and Laplace mechanisms lies in
+their privacy guarantees: the Gaussian mechanism provides
+$(\epsilon, \delta)$-differential privacy, which allows a small
+probability $\delta$ of relaxing the strict privacy requirement, making
+it useful for high-sensitivity queries or larger datasets. However, this
+relaxation means it does not offer the same strict guarantees as the
+Laplace mechanism. The Gaussian mechanism is most effective for queries
+with moderate sensitivity and when some flexibility in privacy
+guarantees is acceptable.
+
+The Exponential mechanism is a versatile method for implementing
+differential privacy, suitable for both numerical and categorical
+queries. Unlike the Laplace and Gaussian mechanisms, which add noise
+directly to the query results, the Exponential mechanism introduces
+randomness by selecting an output based on a probability distribution
+weighted by a utility function. For a dataset $D$ and a possible output
+$r$, the probability of selecting $r$ is proportional to
+$\exp\left(\frac{\epsilon \cdot u(D, r)}{2 \Delta u}\right)$, where
+$u(D, r)$ is the utility function that assigns a score to $r$ based on
+its quality, and $\Delta u$ is the sensitivity of the utility function.
+
+The sensitivity $\Delta u$ represents the maximum change in the utility
+function caused by adding or removing a single data point in the
+dataset. The privacy budget $\epsilon$ controls the balance between
+privacy and accuracy: higher $\epsilon$ values favor outputs with higher
+utility scores, while lower $\epsilon$ values increase randomness,
+improving privacy at the expense of accuracy.
+
+The Exponential mechanism is particularly useful when the query output
+is not numeric or when selecting the best result from a set of
+possibilities, such as recommending items or determining optimal
+parameters. It ensures that outputs with higher utility scores are more
+likely to be chosen while preserving privacy. However, defining an
+appropriate utility function can be complex, and the mechanism may not
+perform well for queries with high sensitivity.
 
 # DiffPriv package
 
