@@ -1,0 +1,34 @@
+"0","results = Dict()
+
+for k in 0:9
+    # Find all the digits of class `k`
+    idx = findall(y -> y == k, labels)  
+
+    # Subset the columns corresponding to class `k`; be sure to include the extra column of 1s!
+    Xsubset = X[:, idx]  # Assuming X is the full dataset matrix with counts 
+    
+    # This code will fit alpha for the subset and report some helpful information about the algorithm.
+    timed_result = @timed dirmult_newton(Xsubset)
+    logpdf, estimate, gradient, hessian, se, iterations = timed_result.value
+    @info ""Fit parameters for digit $(k)"" iterations = iterations max_loglikelihood = logpdf time_sec = timed_result.time
+    
+    # Store the results in an entry within a dictionary object.
+    results[k] = digit_results = Dict()
+    digit_results[""idx""] = idx
+    digit_results[""subset""] = Xsubset
+    digit_results[""time""] = timed_result.time
+    digit_results[""logpdf""] = logpdf
+    digit_results[""estimate""] = estimate
+    digit_results[""gradient""] = gradient
+    digit_results[""hessian""] = hessian
+    digit_results[""se""] = se
+    digit_results[""iterations""] = iterations
+end
+
+total_iter = sum(results[k][""iterations""] for k in 0:9)
+total_logl = sum(results[k][""logpdf""] for k in 0:9)
+total_time = sum(results[k][""time""] for k in 0:9)
+
+@info ""Training summary"" iterations = total_iter max_loglikelihood = total_logl time_sec = total_time"
+"2","Error in loadNamespace(x) : there is no package called ‘JuliaCall’
+"

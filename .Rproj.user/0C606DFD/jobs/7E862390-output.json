@@ -1,0 +1,3 @@
+[1,"==> quarto preview STAT_206_Final_Project_Report.qmd --to html --no-watch-inputs --no-browse\n\n"]
+[1,"pandoc \n  to: html\n  output-file: STAT_206_Final_Project_Report.html\n  standalone: true\n  embed-resources: true\n  section-divs: true\n  html-math-method: mathjax\n  wrap: none\n  default-image-extension: png\n  toc: true\n  \nmetadata\n  document-css: false\n  link-citations: true\n  date-format: long\n  lang: en\n  title: STAT 206 Final Project Report\n  author: 'Axel Galicia Lona, Linlin Liu, and Nancy Lopez'\n  date: '2024-12-13'\n  editor:\n    markdown:\n      wrap: 72\n  toc-location: left\n  \n"]
+[1,"Output created: STAT_206_Final_Project_Report.html\n\nWatching files for changes\nBrowse at http://localhost:3922/\n"]

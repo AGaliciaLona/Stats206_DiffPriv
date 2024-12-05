@@ -1,0 +1,5 @@
+"0","import Pkg
+Pkg.activate(""."")
+Pkg.status()"
+"2","Error in loadNamespace(x) : there is no package called ‘JuliaCall’
+"
