@@ -1,6 +1,6 @@
 ---
 title: "STAT 206 Final Project Report"
-author: "Axel Galicia Lona, Linlin Liu, amd Nancy Lopez"
+author: "Axel Galicia Lona, Linlin Liu, and Nancy Lopez"
 date: "2024-12-13"
 echo: true
 format:
