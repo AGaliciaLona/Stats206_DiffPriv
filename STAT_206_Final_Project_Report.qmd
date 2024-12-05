@@ -24,9 +24,7 @@ editor:
 \listoftables
 \newpage
 
-# Introduction
-
-## Background and Motivation
+# Background and Motivation
 
 Movies are a visual art form that simulates and communicates thoughts,
 actions, ideas, and realities by combining camera recordings with sound.
@@ -89,26 +87,20 @@ algorithms and more personalized recommendations. DP plays a crucial
 role in protecting our privacy in fields like healthcare, technology,
 and beyond.
 
-## DP Examples
+# Differential Privacy Applications
 
 DP introduces mathematical noise to the data, ensuring that insights can
 be derived without revealing specific details about any individual
 involved. This balance between utility and privacy has made DP an
 essential tool in modern data-driven industries.
 
-Tech companies like Apple and Google are pioneers in integrating DP into
-their services. For example, Apple uses DP in features like QuickType,
-where it analyzes typing patterns to improve text prediction and
-autocorrect functionality. This ensures no sensitive typing data is
-accessible to the company while still enabling advanced machine learning
-models to learn user behaviors. Similarly, differential privacy
-underpins Apple's emojis and media usage analytics, which help them
-refine features across devices without linking data to individual users.
-
-Google, on the other hand, leverages DP in tools like Google Maps and
-its Chrome browser. This can aggregate traffic patterns or detect
-website performance issues without identifying specific users or their
-locations, providing valuable insights while maintaining anonymity.
+Tech companies like Apple are pioneers in integrating DP into
+their services. For example, Apple uses DP in features like QuickType (
+Differential Privacy a Privacy-Preserving System, n.d.), where it analyzes
+typing patterns to improve text prediction and autocorrect functionality.
+This ensures no sensitive typing data is accessible to the company while still enabling advanced machine learning models to learn user behaviors. Similarly, differential privacy underpins Apple's emojis and media usage analytics,
+which help them refine features across devices without linking data to
+individual users.
 
 Governments, including the U.S. Census Bureau, rely on DP as well to
 protect participants' confidentiality. In the 2020 Census, DP was
@@ -224,7 +216,7 @@ likely to be chosen while preserving privacy. However, defining an
 appropriate utility function can be complex, and the mechanism may not
 perform well for queries with high sensitivity.
 
-# DiffPriv package
+# diffpriv() Package
 
 We implemented DP to the movies dataest through an R package called
 *diffpriv*. This package provides tools that support differential
@@ -279,3 +271,9 @@ third-party, ensuring that the privacy of individuals is protected.
 # Implementation of DiffPriv
 
 -   now for our example of using diffpriv with linear model.
+
+# Bibliography
+
+*Differential Privacy A privacy-preserving system.* (n.d.).  [https://www.apple.com/privacy/docs/Differential_Privacy_Overview.pdf](https://www.apple.com/privacy/docs/Differential_Privacy_Overview.pdf)
+
+Rubinstein, B., & Aldà, F. (2017). diffpriv: An R Package for Easy Differential Privacy. *Journal of Machine Learning Research, 18, 1–5.* [https://cran.r-project.org/web/packages/diffpriv/vignettes/diffpriv.pdf](https://cran.r-project.org/web/packages/diffpriv/vignettes/diffpriv.pdf)
