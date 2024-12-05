@@ -274,6 +274,8 @@ third-party, ensuring that the privacy of individuals is protected.
 
 # Bibliography
 
-*Differential Privacy A privacy-preserving system.* (n.d.).  [https://www.apple.com/privacy/docs/Differential_Privacy_Overview.pdf](https://www.apple.com/privacy/docs/Differential_Privacy_Overview.pdf)
+Differential Privacy A privacy-preserving system. (n.d.). [https://www.apple.com/privacy/docs/Differential_Privacy_Overview.pdf](https://www.apple.com/privacy/docs/Differential_Privacy_Overview.pdf)
+
+Practical Differential Privacy: Healthcare Scenario. (2024). Pitt.edu. [https://www.sis.pitt.edu/lersais/research/sahi/resources/labs/dp/Lab_differential_privacy.pdf](https://www.sis.pitt.edu/lersais/research/sahi/resources/labs/dp/Lab_differential_privacy.pdf)
 
 Rubinstein, B., & Aldà, F. (2017). diffpriv: An R Package for Easy Differential Privacy. *Journal of Machine Learning Research, 18, 1–5.* [https://cran.r-project.org/web/packages/diffpriv/vignettes/diffpriv.pdf](https://cran.r-project.org/web/packages/diffpriv/vignettes/diffpriv.pdf)
