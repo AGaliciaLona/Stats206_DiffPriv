@@ -96,7 +96,7 @@ essential tool in modern data-driven industries.
 
 Tech companies like Apple are pioneers in integrating DP into
 their services. For example, Apple uses DP in features like QuickType (
-Differential Privacy a Privacy-Preserving System, n.d.), where it analyzes
+Apple differential privacy technical overview, n.d.), where it analyzes
 typing patterns to improve text prediction and autocorrect functionality.
 This ensures no sensitive typing data is accessible to the company while still enabling advanced machine learning models to learn user behaviors. Similarly, differential privacy underpins Apple's emojis and media usage analytics,
 which help them refine features across devices without linking data to
@@ -105,12 +105,12 @@ individual users.
 Governments, including the U.S. Census Bureau, rely on DP as well to
 protect participants' confidentiality. In the 2020 Census, DP was
 introduced to anonymize demographic data shared with policymakers,
-researchers, and the public. By adding noise to reported statistics, the
-system prevents attackers from deducing private details, even if
-datasets are combined with other publicly available information. This
-ensures that privacy is upheld while still providing accurate and
-actionable population trends for resource allocation, urban planning,
-and legislative redistricting.
+researchers, and the public (Differential privacy and the 2020 census, 2021).
+By adding noise to reported statistics, the system prevents attackers from
+deducing private details, even if datasets are combined with other publicly
+available information. This ensures that privacy is upheld while still
+providing accurate and actionable population trends for resource allocation,
+urban planning, and legislative redistricting.
 
 Another field that widely employs DP is the healthcare sector. Hospitals
 and research institutions can share anonymized patient data for
@@ -118,14 +118,6 @@ large-scale studies, like predicting disease outbreaks or evaluating
 treatment efficacy. DP ensures that even if the dataset is intercepted,
 it is mathematically improbable for attackers to extract identifiable
 patient information.
-
-Lastly, DP is increasingly used in online education platforms and remote
-work tools to safeguard user data. For instance, platforms like Coursera
-and Duolingo might use DP to analyze user progress and learning habits
-while protecting individual study behaviors. Tools like Zoom or
-Microsoft Teams could use DP in aggregating call analytics, such as
-meeting duration or user engagement trends, while ensuring participant
-anonymity.
 
 By enabling secure data analysis, DP empowers industries to innovate
 without eroding public trust. This is especially critical in a world
@@ -274,8 +266,12 @@ third-party, ensuring that the privacy of individuals is protected.
 
 # Bibliography
 
-Differential Privacy A privacy-preserving system. (n.d.). [https://www.apple.com/privacy/docs/Differential_Privacy_Overview.pdf](https://www.apple.com/privacy/docs/Differential_Privacy_Overview.pdf)
+Apple differential privacy technical overview. (n.d.). [https://www.apple.com/privacy/docs/Differential_Privacy_Overview.pdf](https://www.apple.com/privacy/docs/Differential_Privacy_Overview.pdf)
+
+Differential privacy and the 2020 census. (2021). [https://www.census.gov/content/dam/Census/library/factsheets/2021/differential-privacy-and-the-2020-census.pdf](https://www.census.gov/content/dam/Census/library/factsheets/2021/differential-privacy-and-the-2020-census.pdf)
+
+Joseph Ficek, Wei Wang, Henian Chen, Getachew Dagne, Ellen Daley, Differential privacy in health research: A scoping review, *Journal of the American Medical Informatics Association*, Volume 28, Issue 10, October 2021, Pages 2269–2276, [https://doi.org/10.1093/jamia/ocab135](https://doi.org/10.1093/jamia/ocab135)
 
 Practical Differential Privacy: Healthcare Scenario. (2024). Pitt.edu. [https://www.sis.pitt.edu/lersais/research/sahi/resources/labs/dp/Lab_differential_privacy.pdf](https://www.sis.pitt.edu/lersais/research/sahi/resources/labs/dp/Lab_differential_privacy.pdf)
 
-Rubinstein, B., & Aldà, F. (2017). diffpriv: An R Package for Easy Differential Privacy. *Journal of Machine Learning Research, 18, 1–5.* [https://cran.r-project.org/web/packages/diffpriv/vignettes/diffpriv.pdf](https://cran.r-project.org/web/packages/diffpriv/vignettes/diffpriv.pdf)
+Rubinstein, B., & Aldà, F. (2017). diffpriv: An R package for easy differential privacy. *Journal of Machine Learning Research, 18, 1–5.* [https://cran.r-project.org/web/packages/diffpriv/vignettes/diffpriv.pdf](https://cran.r-project.org/web/packages/diffpriv/vignettes/diffpriv.pdf)
