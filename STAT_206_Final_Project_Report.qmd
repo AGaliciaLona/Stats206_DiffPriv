@@ -42,7 +42,7 @@ economic impact of movie income, motivated us to pursue this project.
 With abundant data available on various aspects of movies, including
 budget, cast, genre, release dates, and social media buzz, applying
 statistical models becomes a valuable tool for analysis. Thus, we chose
-to build a multilinear regression model for our project.
+to build a multiple linear regression (MLR) model for our project.
 
 Differential privacy (DP) is essential for datasets containing sensitive
 aspects of movies, such as budget, revenue, cast, and others, as it
@@ -52,7 +52,8 @@ competitors from exploiting financial strategies, while preserving
 anonymity in user-related data safeguards privacy rights. By adding
 controlled random noise to the data, differential privacy balances
 utility with confidentiality, enabling meaningful analysis without
-exposing proprietary or personal information.
+exposing proprietary or personal information and making it a crucial tool in
+this data-driven exploration.
 
 # Introduction To Differential Privacy
 
