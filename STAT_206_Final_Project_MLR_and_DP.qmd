@@ -881,5 +881,75 @@ model.
 # Differential Privacy
 
 ```{r}
+library(diffpriv)
+set.seed(111)  # For reproducibility
+# Define target function for linear regression coefficients with intercept
+target_function <- function(X) {
+  model_sim <- lm(lnrev ~ budget + popsqrt * genre + o_lang + vc, data = X)
+  return(coef(model_sim))  # Returns coefficients including the intercept
+}
+
+# Define the Laplace mechanism
+mechanism <- DPMechLaplace(target = target_function)
+mechanism@sensitivity <- 1  # Set sensitivity (example value)
+mechanism@dims <- 7  # Intercept + 6 coefficients
+
+# Set privacy parameters
+privacy_params_sim <- DPParamsEps(epsilon = 1)
+
+# Generate private response for one run
+private_response <- releaseResponse(mechanism, privacyParams = privacy_params_sim, X = sub3)
+
+# Display non-private and private coefficients for comparison
+cat("Non-private coefficients:\n", coef(lm(lnrev ~ budget + popsqrt * genre + o_lang + vc, data = sub3)), "\n")
+cat("Private coefficients:\n", private_response$response, "\n")
+```
+
+## Simulations
+
+```{r}
+set.seed(111)  # For reproducibility
+n_simulations <- 1000
+private_coefficients <- replicate(
+  n_simulations,
+  releaseResponse(mechanism, privacyParams = privacy_params_sim, X = sub3)$response
+)
+
+# Get non-private coefficients
+non_private_coeffs <- coef(lm(lnrev ~ budget + popsqrt * genre + o_lang + vc, data = sub3))
+
+# Create a data frame for private coefficients
+private_df <- as.data.frame(t(private_coefficients))
+colnames(private_df) <- names(non_private_coeffs)
+
+# Reshape data for plotting
+private_df$Simulation <- 1:n_simulations
+private_long <- pivot_longer(private_df, cols = -Simulation, names_to = "Coefficient", values_to = "Value")
+
+# Prepare non-private coefficients for plotting
+non_private_df <- data.frame(
+  Coefficient = names(non_private_coeffs),
+  Value = as.numeric(non_private_coeffs)
+)
+
+# Plot private vs. non-private coefficients
+ggplot() +
+  geom_density(data = private_long, aes(x = Value, fill = "Private"), alpha = 0.5) +
+  geom_vline(data = non_private_df, aes(xintercept = Value, linetype = "Non-Private"), color = "black", size = 0.5) +
+  facet_wrap(~ Coefficient, scales = "free") +
+  labs(title = "Distributions of Private vs. Non-Private Coefficients",
+       x = "Coefficient Value",
+       y = "Density",
+       fill = "Type",
+       linetype = "Type") +
+  scale_fill_manual(values = c("Private" = "red")) +
+  scale_linetype_manual(values = c("Non-Private" = "dashed")) +
+  theme_minimal()
+
+# Validate means of private and non-private coefficients
+cat("Mean of private budget coefficient:\n", mean(private_df$genre), "\n")
+cat("Non-private budget coefficient:\n", non_private_coeffs["genre"], "\n")
+
+
 
 ```
