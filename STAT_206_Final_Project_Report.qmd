@@ -265,35 +265,38 @@ third-party, ensuring that the privacy of individuals is protected.
 
 # Implementation of DiffPriv
 
-The Laplace mechanism is one of the most commonly used methods for implementing 
-Differential Privacy (DP) in numerical data queries. For this project, we employed
-the Laplace mechanism, which provides $(\epsilon, 0)$-differential privacy. The noise
-added to query results is sampled from a Laplace distribution defined as:
+The Laplace mechanism is one of the most commonly used methods for
+implementing Differential Privacy (DP) in numerical data queries. For
+this project, we employed the Laplace mechanism, which provides
+$(\epsilon, 0)$-differential privacy. The noise added to query results
+is sampled from a Laplace distribution defined as:
 $X \sim \text{Laplace}(0, \Delta f / \epsilon)$.
 
-To implement Differential Privacy (DP) in this project, the target function was 
-defined as a linear regression model that estimates the relationship between 
-the log revenue (`lnrev`) and variables such as `budget`, `popsqrt * genre`, 
-`o_lang`, and `vc`. This function returns the coefficients of the regression, 
-including the intercept, which form the query output to be privatized using 
-the Laplace mechanism. By applying noise to the coefficients, the mechanism 
-ensures that the model results do not reveal sensitive details about 
-individual data points in the dataset.
+To implement Differential Privacy (DP) in this project, the target
+function was defined as a linear regression model that estimates the
+relationship between the log revenue (`lnrev`) and variables such as
+`budget`, `popsqrt * genre`, `o_lang`, and `vc`. This function returns
+the coefficients of the regression, including the intercept, which form
+the query output to be privatized using the Laplace mechanism. By
+applying noise to the coefficients, the mechanism ensures that the model
+results do not reveal sensitive details about individual data points in
+the dataset.
 
-The sensitivity of the query, denoted as $\Delta f$, measures the maximum change
-in the regression coefficients caused by the addition or removal of a single data 
-point. For this analysis, $\Delta f$ was set to $1$. This ensures that the magnitude
-of the noise added to each coefficient is proportional to its sensitivity.
+The sensitivity of the query, denoted as $\Delta f$, measures the
+maximum change in the regression coefficients caused by the addition or
+removal of a single data point. For this analysis, $\Delta f$ was set to
+$1$. This ensures that the magnitude of the noise added to each
+coefficient is proportional to its sensitivity.
 
-The privacy budget $\epsilon$ was set to $1$. A smaller value of $\epsilon$ 
-would increase the amount of noise, providing stronger privacy protection but 
-reducing the accuracy of the regression coefficients. Conversely, a larger value
-of $\epsilon$ would result in less noise, improving accuracy but weakening 
-privacy guarantees. 
+The privacy budget $\epsilon$ was set to $1$. A smaller value of
+$\epsilon$ would increase the amount of noise, providing stronger
+privacy protection but reducing the accuracy of the regression
+coefficients. Conversely, a larger value of $\epsilon$ would result in
+less noise, improving accuracy but weakening privacy guarantees.
 
-The dimension of the query output was specified as $7$, corresponding to 
-one intercept and six predictors. This configuration ensured that the 
-Laplace mechanism applied noise to each coefficient. 
+The dimension of the query output was specified as $7$, corresponding to
+one intercept and six predictors. This configuration ensured that the
+Laplace mechanism applied noise to each coefficient.
 
 ```{r,eval=FALSE}
 library(diffpriv)
@@ -320,8 +323,87 @@ cat("Non-private coefficients:\n", coef(lm(lnrev ~ budget + popsqrt * genre + o_
 cat("Private coefficients:\n", private_response$response, "\n")
 ```
 
+To evaluate the impact of the Laplace mechanism on regression
+coefficients, we conducted a simulation study involving 1,000
+iterations. The objective was to assess how the mechanism's added noise
+affects the coefficients' distribution and compare the results to the
+non-private regression coefficients.
+
+**Procedure:**
+
+*Simulating Private Coefficients*:
+
+In each iteration, the Laplace mechanism was applied to the regression
+coefficients, adding noise proportional to the sensitivity of the query
+and inversely proportional to the privacy budget ($\epsilon$). Using the
+releaseResponse function, we generated a set of private coefficients for
+each simulation. These private coefficients were stored for further
+analysis.
+
+*Non Private Coefficients*:
+A standard linear regression model was fitted to the dataset to compute the 
+non private coefficients. These served as a baseline for comparison and were
+calculated once since they remain constant across simulations.
+
+*Visualizations*:
+Density plots were created to display the distributions of the private coefficients
+across the 1,000 simulations. Vertical lines were added to indicate the 
+corresponding non private coefficients, providing a comparison of their 
+centrality and variability. Each coefficient was plotted in a separate facet for clarity.
 
 
+```{r, eval=FALSE}
+# Simulate private coefficients for 1,000 iterations
+set.seed(111)  # For reproducibility
+n_simulations <- 1000
+
+private_coefficients <- replicate(
+  n_simulations,
+  releaseResponse(mechanism, privacyParams = privacy_params_sim, X = sub3)$response
+)
+
+# Get non-private coefficients
+non_private_coeffs <- coef(lm(lnrev ~ budget + popsqrt * genre + o_lang + vc, data = sub3))
+
+# Create a data frame for private coefficients
+private_df <- as.data.frame(t(private_coefficients))
+colnames(private_df) <- names(non_private_coeffs)
+
+# Reshape the private coefficients for visualization
+private_df$Simulation <- 1:n_simulations
+private_long <- pivot_longer(private_df, cols = -Simulation, names_to = "Coefficient", values_to = "Value")
+
+# Prepare non-private coefficients for plotting
+non_private_df <- data.frame(
+  Coefficient = names(non_private_coeffs),
+  Value = as.numeric(non_private_coeffs)
+)
+
+# Plot private vs. non-private coefficients
+ggplot() +
+  geom_density(data = private_long, aes(x = Value, fill = "Private"), alpha = 0.5) +
+  geom_vline(data = non_private_df, aes(xintercept = Value, linetype = "Non-Private"), color = "black", size = 0.5) +
+  facet_wrap(~ Coefficient, scales = "free") +
+  labs(title = "Distributions of Private vs. Non-Private Coefficients",
+       x = "Coefficient Value",
+       y = "Density",
+       fill = "Type",
+       linetype = "Type") +
+  scale_fill_manual(values = c("Private" = "red")) +
+  scale_linetype_manual(values = c("Non-Private" = "dashed")) +
+  theme_minimal()
+
+# Validate means of private and non-private coefficients
+cat("Mean of private budget coefficient:\n", mean(private_df$genre), "\n")
+cat("Non-private budget coefficient:\n", non_private_coeffs["genre"], "\n")
+
+
+
+```
+The density plots showed that the private coefficients were distributed around 
+their nonprivate counterparts, reflecting the noise introduced by the Laplace 
+mechanism. For most coefficients, the distributions had a relatively narrow 
+spread, indicating that the noise did not overly distort the regression results. 
 
 
 # Bibliography
