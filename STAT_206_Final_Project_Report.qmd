@@ -39,15 +39,17 @@ making it a crucial tool in this data-driven exploration.
 
 # Hypotheses
 
-Based on the information provided by the data set, we propose the following hypotheses:
+For this project, we propose the following hypotheses:
 
-1. Different attributes of a feature movie significantly impacts its revenue.
+1. Different attributes of a movie significantly impacts its revenue.
 
 2. A movie’s budget and genre contribute more significantly than others.
 
+3. The private and non-private coefficients obtained for DP will be similar.
+
 # Final MLR Model
 
-After the model buildling process, our proposed final MLR model is
+Our proposed final MLR model is:
 
 $$Y = 2.6366e^{-5}X_1 + 8.5311e^{-1}X_2 + 3.3198X_3 - 7.7753e^{-1}X_4 +
 1.3633e^{-4}X_5 + 5.5155X_6 + \epsilon$$
@@ -76,7 +78,7 @@ variables
 - constant variance: the variability about the least squares line is
 generally constant
 
-  - VAR($\epsilon_i$) = $\sigma^2$, where $i$ = 1, 2, ..., n
+  - Var($\epsilon_i$) = $\sigma^2$, where $i$ = 1, 2, ..., n
   
 - normality: the distribution of the residuals is approximately normal
 
@@ -86,13 +88,13 @@ generally constant
   and $j$ = 1, 2, ..., n
   
 In order to better observe specific predictors, we first converted categorical
-predictor variables into binary integers. We assigned 1 to "Drama" and "en" and
+predictor variables into binary integers, assigning 1 to "Drama" and "en" and
 0 to "Comedy" and "fr."
 
 We utilized scatter plots to examine the relationship between each predictor
-variable and the response variable. We observed distinct patterns in *runtime*,
-*vote_average*, and *vote_count*. The scatter plots for *budget* and
-*popularity* did not reveal a clear linear relationship or direction.
+and the response. We observed distinct patterns in *runtime*, *vote_average*,
+and *vote_count*. The scatter plots for *budget* and *popularity* did not
+reveal a clear linear relationship or direction.
 
 # Introduction To Differential Privacy
 
@@ -346,29 +348,43 @@ spread, indicating that the noise did not overly distort the regression results.
 
 # Conclusion
 
-Our first hypothesis that different attributes of a feature movie significantly 
-impacts its revenue has been proven correct by our final model. It was also
-shown that a movie’s budget and genre contribute significantly, if not more, to
-the movie’s revenue.
+## MLR
 
-Our model is imperfect despite its high adjusted R2 value and significant
-predictors. It failed the Shapiro Wilk test for normality and other assumption
-checks. Using the entire data set instead of limiting it to specific genres and 
-languages might have improved the approximation of normality. Time and knowledge
-constraints also prevented us from conducting additional, more detailed analyses.
-Additionally, the source of the voting data is unknown, which may introduce
-bias.
+The results of our final MLR model confirm that different attributes of a
+movie significantly impact its revenue, with budget and genre being
+particularly significant predictors.
+
+However, our model, despite having a high adjusted $R^{2}$ value and
+significant predictors, failed the Shapiro-Wilk test for normality and other assumption checks. Expanding the dataset to include all genres and languages
+might improve the approximation of normality, and the unknown source of the
+voting data could introduce bias.
 
 With the above in mind, we propose the following future directions to improve
 our model and expand on the studies:
 
-1. Address assumption violations: Perform more transformations on variables or
-use more data to achieve normality and constant variance of residuals. A few
-transformations being considered are logarithmic, square root, and inverse
-transformations.
+1. Perform more transformations on variables or use more data to achieve
+normality and constant variance of residuals. A few transformations being
+considered are square root and inverse transformations.
 
-2. Alternative modeling approaches: Consider generalized linear models (GLMs)
-to accommodate non-normal error distributions or nonlinear relationships.
+2. Consider generalized linear models (GLMs) to accommodate non-normal error distributions or nonlinear relationships.
+
+## DP
+
+The private and non-private coefficients obtained using the *diffpriv()*
+package are very close, indicating that the added noise has minimally impacted
+the statistical estimates. This is likely due to the robustness of the
+statistical model, as models that are less sensitive to small perturbations or
+outliers can naturally produce similar private and non-private coefficients
+even after noise is added. 
+
+In this project, having similar private and non-private coefficients is highly desirable because maintaining high utility and preserving much of the accuracy
+of the original results is a priority.
+
+The density plots showed that the private coefficients were distributed around
+their non-private counterparts, suggesting that the noise added for DP
+was centered and unbiased. This outcome indicates a well-calibrated privacy
+mechanism that effectively balances privacy and utility, minimizing the risk of overestimating or underestimating the coefficients and supporting reliable
+inferences.
 
 # Bibliography
 
