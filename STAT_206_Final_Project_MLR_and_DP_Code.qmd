@@ -15,14 +15,6 @@ format:
 
 # Multiple Linear Regression
 
-## Hypotheses
-
-Based on the information provided by the data set, we propose the following hypotheses:
-
-1. Different attributes of a feature movie significantly impacts its revenue.
-
-2. A movie’s budget and genre contribute more significantly than others.
-
 ## Data Cleaning
 
 Having an original data set of 722,463 observations and 20 variables would make
