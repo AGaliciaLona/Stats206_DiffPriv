@@ -96,37 +96,33 @@ variable and the response variable. We observed distinct patterns in *runtime*,
 
 # Introduction To Differential Privacy
 
-DP is a statistical framework designed to safeguard individual privacy in
-datasets. By introducing random noise to analysis outputs, DP ensures that no
-single individual’s data can be identified or inferred, even with additional
-knowledge of the dataset. This approach balances privacy protection with the
-need for accurate data analysis, enabling organizations to derive insights
-without compromising privacy.
+DP is a statistical method that adds random noise to analysis results to protect
+individual privacy in datasets. It ensures that no individual’s data can be
+identified or inferred, even with extra knowledge, allowing for accurate 
+insightswithout compromising privacy.
 
-The formal definition of DP states that for any 2 datasets, D and D'
-differing by one individual data point, the probability of mechanism $M$
-producing a certain result should be very close for both datasets. This
-can be mathematically expressed as:
-$Pr(M(D)\in R)\leq exp(\epsilon)*Pr(M(D') \in R)$ where $\epsilon$ is
-the privacy parameter. A small privacy parameter means strong privacy
-since the output reveals less information about individual data. By
-having two similar datasets with one missing a data point, it becomes
-extremely difficult to guess whether a specific persons data was used,
-hence protecting individuals' privacy.
+The formal definition of DP states that for 2 datasets, D and D′, differing by
+one individual, the probability of mechanism $M$ producing a result should be 
+nearly identical for both. This is mathematically expressed as:
+$Pr(M(D)\in R)\leq exp(\epsilon)*Pr(M(D') \in R)$ where $\epsilon$ is the
+privacy parameter. A smaller $\epsilon$ ensures stronger privacy, as it reveals
+less about individual data. With two similar datasets differing by one data
+point, it becomes difficult to determine if a specific person's data was used,
+thus protecting privacy.
 
 Formally, DP guarantees that for any two datasets, D and D', differing by one
 data point, the probability of a mechanism $M$ producing a specific output
-remains similar. Mathematically: 
-$Pr(M(D)\in R)\leq exp(\epsilon) \cdot Pr(M(D') \in R)$, where $\epsilon$ is 
-the privacy parameter, with smaller values indicating
-stronger privacy. This ensures that whether or not a specific individual's data
-is included, the outputs are nearly indistinguishable, protecting privacy
-effectively.
+remains similar. Mathematically:
+$Pr(M(D)\in R)\leq exp(\epsilon) \cdot Pr(M(D') \in R)$, where $\epsilon$ is
+the privacy parameter, with smaller values indicating stronger privacy. This 
+ensures that whether or not a specific individual's data is included, the 
+outputs are nearly indistinguishable, protecting privacy effectively.
 
-An effective noise-adding mechanism maintains data utility while preserving
-privacy, allowing meaningful analysis without risking sensitive information.
-In an era of widespread data collection, DP is vital for ensuring privacy while
-enabling technological and analytical advancements.
+An effective noise-adding mechanism preserves privacy while maintaining data 
+utility, enabling analysis without compromising sensitive information. In
+today's data-driven world, DP is crucial for balancing privacy and technological
+progress.
+
 
 # Differential Privacy Applications
 
