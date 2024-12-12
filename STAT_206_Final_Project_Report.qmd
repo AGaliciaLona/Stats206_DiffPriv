@@ -31,21 +31,24 @@ Thus, we chose to build a multiple linear regression (MLR) model for our
 project.
 
 Differential privacy (DP) is essential for datasets containing sensitive
-aspects of movies, as it ensures that individual data points cannot be traced
-back to their sources. By adding controlled random noise to the data,
-differential privacy balances utility with confidentiality, enabling
-meaningful analysis without exposing proprietary or personal information and
-making it a crucial tool in this data-driven exploration.
+aspects of movies, as it ensures that individual data points cannot be
+traced back to their sources. By adding controlled random noise to the
+data, differential privacy balances utility with confidentiality,
+enabling meaningful analysis without exposing proprietary or personal
+information and making it a crucial tool in this data-driven
+exploration.
 
 # Hypotheses
 
 For this project, we propose the following hypotheses:
 
-1. Different attributes of a movie significantly impacts its revenue.
+1.  Different attributes of a movie significantly impacts its revenue.
 
-2. A movie’s budget and genre contribute more significantly than others.
+2.  A movie’s budget and genre contribute more significantly than
+    others.
 
-3. The private and non-private coefficients obtained for DP will be similar.
+3.  The private and non-private coefficients obtained for DP will be
+    similar.
 
 # Final MLR Model
 
@@ -56,75 +59,75 @@ $$Y = 2.6366e^{-5}X_1 + 8.5311e^{-1}X_2 + 3.3198X_3 - 7.7753e^{-1}X_4 +
 
 where
 
-- $Y$ = *lnrev*
+-   $Y$ = *lnrev*
 
-- $X_1$ = *budget*
+-   $X_1$ = *budget*
 
-- $X_2$ = *popsqrt*
+-   $X_2$ = *popsqrt*
 
-- $X_3$ = *genres*
+-   $X_3$ = *genres*
 
-- $X_4$ = *popsqrt* * *genre*
+-   $X_4$ = *popsqrt* \* *genre*
 
-- $X_5$ = *vote count*
+-   $X_5$ = *vote count*
 
-- $X_6$ = *original language*
+-   $X_6$ = *original language*
 
 The assumptions of $\epsilon$ are as follows:
 
-- linearity: a linear relationship exists between the response and predictor
-variables
+-   linearity: a linear relationship exists between the response and
+    predictor variables
 
-- constant variance: the variability about the least squares line is
-generally constant
+-   constant variance: the variability about the least squares line is
+    generally constant
 
-  - Var($\epsilon_i$) = $\sigma^2$, where $i$ = 1, 2, ..., n
-  
-- normality: the distribution of the residuals is approximately normal
+    -   Var($\epsilon_i$) = $\sigma^2$, where $i$ = 1, 2, ..., n
 
-- independence: the residuals are independent from each other
+-   normality: the distribution of the residuals is approximately normal
 
-  - for $\epsilon_i$ and $\epsilon_j$, $i \neq j$, where $i$ = 1, 2, ..., n,
-  and $j$ = 1, 2, ..., n
-  
-In order to better observe specific predictors, we first converted categorical
-predictor variables into binary integers, assigning 1 to "Drama" and "en" and
-0 to "Comedy" and "fr."
+-   independence: the residuals are independent from each other
 
-We utilized scatter plots to examine the relationship between each predictor
-and the response. We observed distinct patterns in *runtime*, *vote_average*,
-and *vote_count*. The scatter plots for *budget* and *popularity* did not
-reveal a clear linear relationship or direction.
+    -   for $\epsilon_i$ and $\epsilon_j$, $i \neq j$, where $i$ = 1, 2,
+        ..., n, and $j$ = 1, 2, ..., n
+
+In order to better observe specific predictors, we first converted
+categorical predictor variables into binary integers, assigning 1 to
+"Drama" and "en" and 0 to "Comedy" and "fr."
+
+We utilized scatter plots to examine the relationship between each
+predictor and the response. We observed distinct patterns in *runtime*,
+*vote_average*, and *vote_count*. The scatter plots for *budget* and
+*popularity* did not reveal a clear linear relationship or direction.
 
 # Introduction To Differential Privacy
 
-DP is a statistical method that adds random noise to analysis results to protect
-individual privacy in datasets. It ensures that no individual’s data can be
-identified or inferred, even with extra knowledge, allowing for accurate 
-insightswithout compromising privacy.
+DP is a statistical method that adds random noise to analysis results to
+protect individual privacy in datasets. It ensures that no individual’s
+data can be identified or inferred, even with extra knowledge, allowing
+for accurate insightswithout compromising privacy.
 
-The formal definition of DP states that for 2 datasets, D and D′, differing by
-one individual, the probability of mechanism $M$ producing a result should be 
-nearly identical for both. This is mathematically expressed as:
-$Pr(M(D)\in R)\leq exp(\epsilon)*Pr(M(D') \in R)$ where $\epsilon$ is the
-privacy parameter. A smaller $\epsilon$ ensures stronger privacy, as it reveals
-less about individual data. With two similar datasets differing by one data
-point, it becomes difficult to determine if a specific person's data was used,
-thus protecting privacy.
+The formal definition of DP states that for 2 datasets, D and D′,
+differing by one individual, the probability of mechanism $M$ producing
+a result should be nearly identical for both. This is mathematically
+expressed as: $Pr(M(D)\in R)\leq exp(\epsilon)*Pr(M(D') \in R)$ where
+$\epsilon$ is the privacy parameter. A smaller $\epsilon$ ensures
+stronger privacy, as it reveals less about individual data. With two
+similar datasets differing by one data point, it becomes difficult to
+determine if a specific person's data was used, thus protecting privacy.
 
-Formally, DP guarantees that for any two datasets, D and D', differing by one
-data point, the probability of a mechanism $M$ producing a specific output
-remains similar. Mathematically:
-$Pr(M(D)\in R)\leq exp(\epsilon) \cdot Pr(M(D') \in R)$, where $\epsilon$ is
-the privacy parameter, with smaller values indicating stronger privacy. This 
-ensures that whether or not a specific individual's data is included, the 
-outputs are nearly indistinguishable, protecting privacy effectively.
+Formally, DP guarantees that for any two datasets, D and D', differing
+by one data point, the probability of a mechanism $M$ producing a
+specific output remains similar. Mathematically:
+$Pr(M(D)\in R)\leq exp(\epsilon) \cdot Pr(M(D') \in R)$, where
+$\epsilon$ is the privacy parameter, with smaller values indicating
+stronger privacy. This ensures that whether or not a specific
+individual's data is included, the outputs are nearly indistinguishable,
+protecting privacy effectively.
 
-An effective noise-adding mechanism preserves privacy while maintaining data 
-utility, enabling analysis without compromising sensitive information. In
-today's data-driven world, DP is crucial for balancing privacy and technological
-progress.
-
+An effective noise-adding mechanism preserves privacy while maintaining
+data utility, enabling analysis without compromising sensitive
+information. In today's data-driven world, DP is crucial for balancing
+privacy and technological progress.
 
 # Differential Privacy Applications
 
@@ -167,77 +170,144 @@ Exponential. This project uses the Laplace mechanism, which provides
 $(\epsilon, 0)$-DP by adding noise from a Laplace distribution:
 $X \sim \text{Laplace}(0, \Delta f / \epsilon)$. Here, $\Delta f$ is the
 query sensitivity, representing the maximum change caused by adding or
-removing a single data point, and $\epsilon$ is the privacy budget. A smaller
-$\epsilon$ increases noise for stronger privacy, while a larger $\epsilon$
-reduces noise for better accuracy. The Laplace mechanism works best for
-numerical queries with low to moderate $L_1$ sensitivity but is unsuitable for 
-high-sensitivity or non-numerical queries.
+removing a single data point, and $\epsilon$ is the privacy budget. A
+smaller $\epsilon$ increases noise for stronger privacy, while a larger
+$\epsilon$ reduces noise for better accuracy. The Laplace mechanism
+works best for numerical queries with low to moderate $L_1$ sensitivity
+but is unsuitable for high-sensitivity or non-numerical queries.
 
-The Gaussian mechanism, offering $(\epsilon, \delta)$-DP, adds noise sampled
-from a Gaussian distribution: $X \sim N(0, \sigma^2)$. The noise
-standard deviation $\sigma$ is determined by $\Delta f$, $\epsilon$,
-and $\delta$, a relaxation parameter, using
-$\sigma = \frac{\Delta f \cdot \sqrt{2 \ln(1.25/\delta)}}{\epsilon}$. Gaussian
-noise is particularly effective for queries where $L_2$ sensitivity is smaller
-than $L_1$ sensitivity, as it introduces less noise. While the mechanism is
-suitable for high-sensitivity or large datasets, its privacy guarantees are
-slightly weaker than the Laplace mechanism.
+The Gaussian mechanism, offering $(\epsilon, \delta)$-DP, adds noise
+sampled from a Gaussian distribution: $X \sim N(0, \sigma^2)$. The noise
+standard deviation $\sigma$ is determined by $\Delta f$, $\epsilon$, and
+$\delta$, a relaxation parameter, using
+$\sigma = \frac{\Delta f \cdot \sqrt{2 \ln(1.25/\delta)}}{\epsilon}$.
+Gaussian noise is particularly effective for queries where $L_2$
+sensitivity is smaller than $L_1$ sensitivity, as it introduces less
+noise. While the mechanism is suitable for high-sensitivity or large
+datasets, its privacy guarantees are slightly weaker than the Laplace
+mechanism.
 
-The Exponential mechanism applies to numerical and categorical queries by
-selecting an output based on a probability distribution weighted by a utility 
-function. The probability of selecting output $r$ is proportional to 
-$\exp\left(\frac{\epsilon \cdot u(D, r)}{2 \Delta u}\right)$, where $u(D, r)$
-is the utility function and $\Delta u$ is its sensitivity. It is ideal for
-scenarios requiring non-numeric outputs, such as ranking or parameter
-selection. However, it relies heavily on defining a suitable utility function
-and may perform poorly for high-sensitivity queries.
+The Exponential mechanism applies to numerical and categorical queries
+by selecting an output based on a probability distribution weighted by a
+utility function. The probability of selecting output $r$ is
+proportional to
+$\exp\left(\frac{\epsilon \cdot u(D, r)}{2 \Delta u}\right)$, where
+$u(D, r)$ is the utility function and $\Delta u$ is its sensitivity. It
+is ideal for scenarios requiring non-numeric outputs, such as ranking or
+parameter selection. However, it relies heavily on defining a suitable
+utility function and may perform poorly for high-sensitivity queries.
 
 # diffpriv() Package
 
 We implemented DP to the final MLR model we built using the R package
-*diffpriv()*. This package simplifies DP implementation by providing tools
-like genetic mechanisms and a sensitivity sampler, which estimates sensitivity 
-empirically instead of calculating exact bounds. This approach is
-computationally efficient, especially for complex queries or large datasets.
+*diffpriv()*. This package simplifies DP implementation by providing
+tools like genetic mechanisms and a sensitivity sampler, which estimates
+sensitivity empirically instead of calculating exact bounds. This
+approach is computationally efficient, especially for complex queries or
+large datasets.
 
 DP noise is added to query results based on their sensitivity. Using
-*diffpriv()*, the sensitivity sampler estimates sensitivity directly from
-sample data, bypassing complex calculations and delivering practical and
-accurate results for most queries.
+*diffpriv()*, the sensitivity sampler estimates sensitivity directly
+from sample data, bypassing complex calculations and delivering
+practical and accurate results for most queries.
 
-To use the package, the process begins by defining the target function for 
-privatization, such as a dataset, mean, or regression coefficients. For our
-project, we privatized linear regression coefficients. Sensitivity was
-determined using the Laplace distribution, with global sensitivity calculated
-as $\frac{1}{n}$, where $n$ is the number of observations in the MLR model.
-Larger datasets reduce the impact of individual data points, requiring less
-noise and improving efficiency while maintaining privacy.
+To use the package, the process begins by defining the target function
+for privatization, such as a dataset, mean, or regression coefficients.
+For our project, we privatized linear regression coefficients.
+Sensitivity was determined using the Laplace distribution, with global
+sensitivity calculated as $\frac{1}{n}$, where $n$ is the number of
+observations in the MLR model. Larger datasets reduce the impact of
+individual data points, requiring less noise and improving efficiency
+while maintaining privacy.
 
-The privacy budget $\epsilon$, which balances privacy and accuracy, was set to
-1, offering moderate privacy. After defining privacy parameters, the
-*DPMechLaplace()* function added Laplace noise to query results, and the
-*releaseResponse()* function released the privatized output. This final output 
-protects individual privacy while ensuring the data's utility for third-party 
-analysis.
+The privacy budget $\epsilon$, which balances privacy and accuracy, was
+set to 1, offering moderate privacy. After defining privacy parameters,
+the *DPMechLaplace()* function added Laplace noise to query results, and
+the *releaseResponse()* function released the privatized output. This
+final output protects individual privacy while ensuring the data's
+utility for third-party analysis.
+
+### background code
+
+available in qmd
+```{r, include=FALSE}
+library(tidyverse)
+original <- read.csv(file.choose(), header = T)
+# subset data
+sub1 <- subset(original, select = c("genres", "original_language",
+                                    "popularity","budget","revenue",
+                                    "runtime","vote_average", "vote_count"))
+
+# replace all empty cells and 0's with NA
+sub1[sub1 == "" | sub1 == 0] <- NA
+
+# clean the data with selected restrictions
+sub2 <- sub1 %>%
+  na.omit() %>%
+  filter(revenue >= 10000) %>%
+  filter(budget >= 10000) %>%
+  filter(runtime >= 40) %>%
+  filter(vote_count >= 95) %>%
+  filter(vote_average > 0) 
+
+# split genres and find the top 2 genres
+sub2$genres <- sapply(strsplit(sub2$genres, "-"), `[`, 1)
+genre_freq <- table(sub2$genres)
+genre_rank <- sort(genre_freq, decreasing = TRUE)
+head(genre_rank, 2)
+
+# find the top 2 original languages
+lang_freq <- table(sub2$original_language)
+lang_rank <- sort(lang_freq, decreasing = T)
+lang_rank[1:2]
+
+# subset again using only the top 2 genres and the top 2 original languages
+# this is the final data set to be used for model building
+sub3 <- sub2 %>%
+  filter(genres == "Drama" | genres == "Comedy") %>%
+  filter(original_language == "en" | original_language == "fr")
+
+# divide revenue and budget by 1000 for easier calculations and visualization
+sub3$budget <- as.numeric(as.character(sub3$budget)) / 1000
+sub3$revenue <- as.numeric(as.character(sub3$revenue)) / 1000
+
+rev <- sub3$revenue
+vc <- sub3$vote_count
+budget <- sub3$budget
+pop <- sub3$popularity
+va <- sub3$vote_average
+rt <- sub3$runtime
+
+# create dummy variables for each cat var
+genre <- ifelse(sub3$genres == "Drama", 1, 0)
+o_lang <- ifelse(sub3$original_language == "en", 1, 0)
+lnrev <- log(sub3$revenue)
+popsqrt <- sqrt(pop)
+
+```
+
+
 
 # Implementation of diffpriv()
 
-The Laplace mechanism, a widely used approach for DP, was employed to protect
-the outputs of our final MLR model, which estimated the relationship between
-log revenue (*lnrev*) and predictors including *budget*, *popsqrt* * *genre*,
-*o_lang*, and *vc*. The model's coefficients, including the intercept, formed
-the query output to be privatized. Adding Laplace noise to these coefficients
-ensured that individual data points remained secure.
+The Laplace mechanism, a widely used approach for DP, was employed to
+protect the outputs of our final MLR model, which estimated the
+relationship between log revenue (*lnrev*) and predictors including
+*budget*, *popsqrt* \* *genre*, *o_lang*, and *vc*. The model's
+coefficients, including the intercept, formed the query output to be
+privatized. Adding Laplace noise to these coefficients ensured that
+individual data points remained secure.
 
-The sensitivity $\Delta f$ and the privacy budget $\epsilon$ were set to $1$.
-This balanced privacy and accuracy, with smaller $\epsilon$ values increasing
-noise for stronger privacy and larger values reducing noise for better accuracy.
+The sensitivity $\Delta f$ and the privacy budget $\epsilon$ were set to
+$1$. This balanced privacy and accuracy, with smaller $\epsilon$ values
+increasing noise for stronger privacy and larger values reducing noise
+for better accuracy.
 
 The query output dimension was $7$, encompassing one intercept and six
-predictors. Noise was applied to each coefficient, preserving privacy without
-compromising the overall utility of the model.
+predictors. Noise was applied to each coefficient, preserving privacy
+without compromising the overall utility of the model.
 
-```{r,eval=FALSE}
+```{r}
 library(diffpriv)
 
 set.seed(111)  # for reproducibility
@@ -267,10 +337,11 @@ cat("Non-private coefficients:\n", coef(lm(lnrev ~ budget + popsqrt * genre + o_
 cat("Private coefficients:\n", private_response$response, "\n")
 ```
 
-We then conducted a simulation study involving 1,000 iterations to evaluate the
-impact of the Laplace mechanism on the coefficients. The objective was to
-assess how the mechanism's added noise affects the coefficients' distribution
-and compare the results to the non-private regression coefficients.
+We then conducted a simulation study involving 1,000 iterations to
+evaluate the impact of the Laplace mechanism on the coefficients. The
+objective was to assess how the mechanism's added noise affects the
+coefficients' distribution and compare the results to the non-private
+regression coefficients.
 
 ## Simulations
 
@@ -280,19 +351,19 @@ and inversely proportional to the privacy budget ($\epsilon$). Using
 *releaseResponse()*, we generated a set of private coefficients for each
 simulation. These private coefficients were stored for further analysis.
 
-A standard MLR model was fitted to the dataset to compute the non-private 
-coefficients. These served as a baseline for comparison and were calculated
-once since they remain constant across simulations.
+A standard MLR model was fitted to the dataset to compute the
+non-private coefficients. These served as a baseline for comparison and
+were calculated once since they remain constant across simulations.
 
 ## Visualizations
 
 Density plots were created to display the distributions of the private
 coefficients across the 1,000 simulations. Vertical lines were added to
-indicate the corresponding non-private coefficients, providing a comparison of
-their centrality and variability. Each coefficient was plotted in a separate
-facet for clarity.
+indicate the corresponding non-private coefficients, providing a
+comparison of their centrality and variability. Each coefficient was
+plotted in a separate facet for clarity.
 
-```{r, eval=FALSE}
+```{r,warning=FALSE}
 set.seed(111)  
 
 n_simulations <- 1000
@@ -341,50 +412,56 @@ cat("Mean of private budget coefficient:\n", mean(private_df$genre), "\n")
 cat("Non-private budget coefficient:\n", non_private_coeffs["genre"], "\n")
 ```
 
-The density plots showed that the private coefficients were distributed around 
-their non-private counterparts, reflecting the noise introduced by the Laplace 
-mechanism. For most coefficients, the distributions had a relatively narrow 
-spread, indicating that the noise did not overly distort the regression results. 
+The density plots showed that the private coefficients were distributed
+around their non-private counterparts, reflecting the noise introduced
+by the Laplace mechanism. For most coefficients, the distributions had a
+relatively narrow spread, indicating that the noise did not overly
+distort the regression results.
 
 # Conclusion
 
 ## MLR
 
-The results of our final MLR model confirm that different attributes of a
-movie significantly impact its revenue, with budget and genre being
+The results of our final MLR model confirm that different attributes of
+a movie significantly impact its revenue, with budget and genre being
 particularly significant predictors.
 
 However, our model, despite having a high adjusted $R^{2}$ value and
-significant predictors, failed the Shapiro-Wilk test for normality and other assumption checks. Expanding the dataset to include all genres and languages
-might improve the approximation of normality, and the unknown source of the
-voting data could introduce bias.
+significant predictors, failed the Shapiro-Wilk test for normality and
+other assumption checks. Expanding the dataset to include all genres and
+languages might improve the approximation of normality, and the unknown
+source of the voting data could introduce bias.
 
-With the above in mind, we propose the following future directions to improve
-our model and expand on the studies:
+With the above in mind, we propose the following future directions to
+improve our model and expand on the studies:
 
-1. Perform more transformations on variables or use more data to achieve
-normality and constant variance of residuals. A few transformations being
-considered are square root and inverse transformations.
+1.  Perform more transformations on variables or use more data to
+    achieve normality and constant variance of residuals. A few
+    transformations being considered are square root and inverse
+    transformations.
 
-2. Consider generalized linear models (GLMs) to accommodate non-normal error distributions or nonlinear relationships.
+2.  Consider generalized linear models (GLMs) to accommodate non-normal
+    error distributions or nonlinear relationships.
 
 ## DP
 
 The private and non-private coefficients obtained using the *diffpriv()*
-package are very close, indicating that the added noise has minimally impacted
-the statistical estimates. This is likely due to the robustness of the
-statistical model, as models that are less sensitive to small perturbations or
-outliers can naturally produce similar private and non-private coefficients
-even after noise is added. 
+package are very close, indicating that the added noise has minimally
+impacted the statistical estimates. This is likely due to the robustness
+of the statistical model, as models that are less sensitive to small
+perturbations or outliers can naturally produce similar private and
+non-private coefficients even after noise is added.
 
-In this project, having similar private and non-private coefficients is highly desirable because maintaining high utility and preserving much of the accuracy
-of the original results is a priority.
+In this project, having similar private and non-private coefficients is
+highly desirable because maintaining high utility and preserving much of
+the accuracy of the original results is a priority.
 
-The density plots showed that the private coefficients were distributed around
-their non-private counterparts, suggesting that the noise added for DP
-was centered and unbiased. This outcome indicates a well-calibrated privacy
-mechanism that effectively balances privacy and utility, minimizing the risk of overestimating or underestimating the coefficients and supporting reliable
-inferences.
+The density plots showed that the private coefficients were distributed
+around their non-private counterparts, suggesting that the noise added
+for DP was centered and unbiased. This outcome indicates a
+well-calibrated privacy mechanism that effectively balances privacy and
+utility, minimizing the risk of overestimating or underestimating the
+coefficients and supporting reliable inferences.
 
 # Bibliography
 
@@ -405,3 +482,7 @@ Practical Differential Privacy: Healthcare Scenario. (2024). Pitt.edu.
 Rubinstein, B., & Aldà, F. (2017). diffpriv: An R package for easy
 differential privacy. *Journal of Machine Learning Research, 18, 1–5.*
 <https://cran.r-project.org/web/packages/diffpriv/vignettes/diffpriv.pdf>
+
+
+
+
