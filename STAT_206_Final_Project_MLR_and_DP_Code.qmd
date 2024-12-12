@@ -99,6 +99,7 @@ sub3 <- sub2 %>%
 # divide revenue and budget by 1000 for easier calculations and visualization
 sub3$budget <- as.numeric(as.character(sub3$budget)) / 1000
 sub3$revenue <- as.numeric(as.character(sub3$revenue)) / 1000
+
 ```
 
 ## Data Description
@@ -923,3 +924,12 @@ ggplot() +
 cat("Mean of private budget coefficient:\n", mean(private_df$genre), "\n")
 cat("Non-private budget coefficient:\n", non_private_coeffs["genre"], "\n")
 ```
+
+### Give the filter dataset in CSV
+```{r,eval=FALSE}
+library(readr)
+write_csv(sub3, "dataset_filtered.csv")
+
+
+```
+
